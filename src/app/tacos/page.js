@@ -85,7 +85,7 @@ Each bite delivers authentic Mexican flavors that are perfectly complemented by 
         rounded="rounded-r-3xl "
         margin="mr-20 mt-10"
         colors="bg-red-400 text-black"
-        imageSrc="tacos3.jpeg"
+        imageSrc="tacos3.webp"
         imagePosition="right"
         alt="6 mouth watering tacos. 3 of which are Adobada tacos also known as Al Pasotr Tacos."
       />
