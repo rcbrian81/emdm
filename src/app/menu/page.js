@@ -356,7 +356,7 @@ export default function Menu() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div className="space-y-12">
             <CategorySection title="Specialties" items={Specialties} />
-            <CategorySection title="Oaxacenos" items={Qaxacenos} />
+            <CategorySection title="Oaxaqueños" items={Qaxacenos} />
             <CategorySection title="Cockteles" items={cockteles} />
             <CategorySection title="Caldos" items={caldos} />
             <CategorySection title="Botanas" items={Botanas} />

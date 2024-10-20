@@ -38,9 +38,10 @@ export default function Tacos() {
       <div className="relative w-full pt-[20vh]  pt-0 h-[90vh]">
         {/* Background image */}
         <img
-          src="/images/miche3.jpg"
+          src="/images/miche3.webp"
           alt="2 sweating delicous michelada drinks. Along side the micheladas are a side of chips and salsa and and 7 bottled beers in the back"
           className="object-cover w-full h-full"
+          loading="eager"
         />
       </div>
 

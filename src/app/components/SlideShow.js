@@ -42,6 +42,7 @@ export default function Slideshow({ className }) {
           className={`transition-opacity duration-1000 ease-in-out ${
             isVisible ? "opacity-100" : "opacity-0"
           }`}
+          loading="eager"
         />
       </div>
     </div>
