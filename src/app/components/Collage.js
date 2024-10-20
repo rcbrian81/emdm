@@ -6,11 +6,11 @@ import Image from "next/image";
 export default function Collage() {
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const openModal = (image) => {
+  const openImage = (image) => {
     setSelectedImage(image);
   };
 
-  const closeModal = () => {
+  const closeImage = () => {
     setSelectedImage(null);
   };
 
@@ -18,36 +18,36 @@ export default function Collage() {
     <div className="grid grid-cols-5 grid-rows-2 gap-0 h-[100vh] w-full">
       <div
         className="relative row-span-2 col-span-2 overflow-hidden cursor-pointer"
-        onClick={() => openModal("/images/parillada1.webp")}
+        onClick={() => openImage("/images/parillada1.webp")}
       >
         <Image
           src="/images/parillada1.webp"
           layout="fill"
           objectFit="cover"
           className="transition-transform transition-filter duration-500 ease-in-out transform hover:scale-110 hover:brightness-110"
-          alt="Steaming Hot Fajitas with large shrimp served on cast-iorn which is also seated on a thick wooden tray."
+          alt="Steaming Hot Fajitas with large shrimp served on cast-iron which is also seated on a thick wooden tray."
         />
       </div>
 
       <div
-        className="relative col-span-1 overflow-hidden  cursor-pointer"
-        onClick={() => openModal("/images/margarona1.webp")}
+        className="relative col-span-1 overflow-hidden cursor-pointer"
+        onClick={() => openImage("/images/margarona1.webp")}
       >
         <Image
           src="/images/margarona1.webp"
           layout="fill"
           objectFit="cover"
           className="transition-transform transition-filter duration-500 ease-in-out transform hover:scale-110 hover:brightness-110"
-          alt="Margarita similar style drink called a Margarona. A Galss chalise with an upsidedown cornon sitting in the yellow and ice cold drink."
+          alt="Margarita similar style drink called a Margarona. A glass chalice with an upside-down corona sitting in the yellow and ice-cold drink."
         />
       </div>
       <div
         className="relative col-span-1 overflow-hidden cursor-pointer"
-        onClick={() => openModal("/images/molcajete1.webp")}
+        onClick={() => openImage("/images/molcajete1.webp")}
       >
         <Image
           src="/images/molcajete1.webp"
-          alt="Stone and rock bowl filled with a sizling sauce that from which emerges grilled chicken, carne asada, nopal, hot pepers, bacon wrapped shrimp and avocado."
+          alt="Stone and rock bowl filled with a sizzling sauce that from which emerges grilled chicken, carne asada, nopal, hot peppers, bacon-wrapped shrimp, and avocado."
           layout="fill"
           objectFit="cover"
           className="transition-transform transition-filter duration-500 ease-in-out transform hover:scale-110 hover:brightness-110"
@@ -55,11 +55,11 @@ export default function Collage() {
       </div>
       <div
         className="relative col-span-1 overflow-hidden cursor-pointer"
-        onClick={() => openModal("/images/miche1.webp")}
+        onClick={() => openImage("/images/miche1.webp")}
       >
         <Image
           src="/images/miche1.webp"
-          alt="Perfectley colored and ICE-cold michelada, brimed with a chili powder."
+          alt="Perfectly colored and ICE-cold michelada, brimmed with chili powder."
           layout="fill"
           objectFit="cover"
           className="transition-transform transition-filter duration-500 ease-in-out transform hover:scale-110 hover:brightness-110"
@@ -67,11 +67,11 @@ export default function Collage() {
       </div>
       <div
         className="relative col-span-1 overflow-hidden cursor-pointer"
-        onClick={() => openModal("/images/cocktel1.webp")}
+        onClick={() => openImage("/images/cocktel1.webp")}
       >
         <Image
           src="/images/cocktel1.webp"
-          alt="Glass cocktel cup filled packed and overflowing with shrimp, cucumber, cucumber, onions, tomato, and scallops. It sits on a plate with lime and an oyster."
+          alt="Glass cocktail cup packed and overflowing with shrimp, cucumber, onions, tomato, and scallops. It sits on a plate with lime and an oyster."
           layout="fill"
           objectFit="cover"
           className="transition-transform transition-filter duration-500 ease-in-out transform hover:scale-110 hover:brightness-110"
@@ -79,11 +79,11 @@ export default function Collage() {
       </div>
       <div
         className="relative col-span-1 overflow-hidden cursor-pointer"
-        onClick={() => openModal("/images/cubeta.webp")}
+        onClick={() => openImage("/images/cubeta.webp")}
       >
         <Image
           src="/images/cubeta.webp"
-          alt="Silver beer bucket overflowing with ice and seating beers including corona, modelo, dos x's, victoria, and other mexicna beers."
+          alt="Silver beer bucket overflowing with ice and seating beers including corona, modelo, dos equis, victoria, and other Mexican beers."
           layout="fill"
           objectFit="cover"
           className="transition-transform transition-filter duration-500 ease-in-out transform hover:scale-110 hover:brightness-110"
@@ -91,11 +91,11 @@ export default function Collage() {
       </div>
       <div
         className="relative col-span-1 overflow-hidden cursor-pointer"
-        onClick={() => openModal("/images/gobernador.webp")}
+        onClick={() => openImage("/images/gobernador.webp")}
       >
         <Image
           src="/images/gobernador.webp"
-          alt="2 shirmp filled tacos help up ny a silver stand and sitting on a plat alongside beans and rice."
+          alt="2 shrimp-filled tacos held up by a silver stand and sitting on a plate alongside beans and rice."
           layout="fill"
           objectFit="cover"
           className="transition-transform transition-filter duration-500 ease-in-out transform hover:scale-110 hover:brightness-110"
@@ -105,9 +105,9 @@ export default function Collage() {
       {selectedImage && (
         <div
           className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
-          onClick={closeModal} // Close modal on click
+          onClick={closeImage}
         >
-          <div className="relative w-[100vw] h-[100vh]">
+          <div className="relative w-[90vw] h-[90vh]">
             <Image
               src={selectedImage}
               alt="Expanded Image"
@@ -115,12 +115,6 @@ export default function Collage() {
               objectFit="contain"
               className="rounded-lg"
             />
-            <button
-              className="absolute top-4 right-4 text-white text-xl"
-              onClick={closeModal}
-            >
-              ✕
-            </button>
           </div>
         </div>
       )}

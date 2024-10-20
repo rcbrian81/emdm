@@ -5,7 +5,6 @@ import SlideShow from "./components/SlideShow.js";
 import ActionBar from "./components/ActionBar.js";
 import Welcome from "./components/Welcome.js";
 import Collage from "./components/Collage.js";
-import Modal from "./components/modal.js";
 import Mariscos from "./components/Mariscos.js";
 import Micheladas from "./components/Micheladas.js";
 import Tacos_Burritos from "./components/Tacos&Burritos.js";
@@ -56,7 +55,6 @@ export default function Home() {
         <Welcome />
         <Announcements />
         <Collage />
-        <Modal />
         <Mariscos />
         <Micheladas />
         <Tacos_Burritos />
