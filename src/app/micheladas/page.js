@@ -45,8 +45,8 @@ export default function Tacos() {
         />
       </div>
 
-      <h1 className=" bg-black text-white text-5xl font-bold  h-[10vh] text-center ">
-        Best Micheladas in Oceanisde CA
+      <h1 className="bg-black text-white text-3xl md:text-5xl font-bold h-[10vh] flex items-center justify-center">
+        Best Micheladas in Oceanside CA
       </h1>
 
       <OutCrop
