@@ -5,7 +5,7 @@ export default function Micheladas() {
     <div className="flex flex-col md:flex-row w-full h-auto md:h-[50vh] bg-black text-right">
       <div className="relative w-full md:w-2/5 h-[40vh] md:h-full">
         <Image
-          src="/images/miche2.jpg"
+          src="/images/miche2.webp"
           alt="Ice cold red/orange michelada served in a large glass Tankard cup. The cup is seating with precipitation and a resturant dining area in the background with chips and beer."
           layout="fill"
           objectFit="cover"
