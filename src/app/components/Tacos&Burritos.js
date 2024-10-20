@@ -15,7 +15,7 @@ export default function Tacos_Burritos() {
 
       <div className="relative w-full md:w-2/5 h-[40vh] md:h-full">
         <Image
-          src="/images/tacos.jpg"
+          src="/images/tacos.webp"
           alt="Tacos, burrito, and quesadillas all on a single table."
           layout="fill"
           objectFit="cover"

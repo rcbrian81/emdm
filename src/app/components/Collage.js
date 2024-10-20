@@ -79,10 +79,10 @@ export default function Collage() {
       </div>
       <div
         className="relative col-span-1 overflow-hidden cursor-pointer"
-        onClick={() => openImage("/images/cubeta.webp")}
+        onClick={() => openImage("/images/cubeta1.webp")}
       >
         <Image
-          src="/images/cubeta.webp"
+          src="/images/cubeta1.webp"
           alt="Silver beer bucket overflowing with ice and seating beers including corona, modelo, dos equis, victoria, and other Mexican beers."
           layout="fill"
           objectFit="cover"

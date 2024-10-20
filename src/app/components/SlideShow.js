@@ -6,11 +6,11 @@ import Image from "next/image";
 export default function Slideshow({ className }) {
   const images = [
     "/images/slideshow1.webp",
-    "/images/miche5.jpg",
+    "/images/miche5.webp",
     "/images/slideshow2.webp",
     "/images/slideshow3.webp",
-    "/images/parillada.jpg",
-    "/images/chorros.jpg",
+    "/images/parillada.webp",
+    "/images/chorros.webp",
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
