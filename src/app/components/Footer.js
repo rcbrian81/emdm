@@ -18,7 +18,8 @@ export default function Footer() {
           rel="noopener noreferrer"
           className="text-red-500 hover:underline text-lg"
         >
-          Get Directions
+          Get Directions<br></br>
+          <address>2936 Oceanside Blvd, Oceanside CA, 92054</address>
         </a>
       </div>
       <div className="flex-1 text-center">

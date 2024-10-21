@@ -6,9 +6,10 @@ export default function Mariscos() {
       <div className="p-8 md:p-16 w-full md:w-3/5">
         <h3 className="text-3xl md:text-5xl m-4 md:m-8">Mariscos</h3>
         <p className="text-lg md:text-2xl">
-          The best-kept secret of Mexican cuisine. Uncover this coastal
-          treasure, often overshadowed by its more familiar counterparts, and
-          experience a side of Mexican food that remains an unturned stone.
+          The best-kept secret of Mexican cuisine, often overshadowed by its
+          more familiar counterparts. Come to El Mundo Marisco here in
+          Oceanside, CA and uncover what truly is an unturned stone in Mexican
+          food.
         </p>
       </div>
 

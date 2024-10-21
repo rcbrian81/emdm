@@ -9,7 +9,8 @@ export default function Tacos_Burritos() {
           Our menu proudly features the beloved staples of Mexican
           cuisine—tacos, burritos, and quesadillas. Prepared with the same care
           and authenticity as everything we serve, these classics are perfect
-          for those seeking familiar, flavorful favorites.
+          for those seeking familiar, flavorful favorites. All here At El Mundo
+          De Mariscos in Oceanside, CA.
         </p>
       </div>
 

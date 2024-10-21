@@ -35,7 +35,7 @@ export default function Tacos() {
         colors="bg-black bg-opacity-70 text-white"
         className={" text-black fixed"}
       />
-      <div className="relative w-full pt-[20vh]  pt-0 h-[90vh]">
+      <div className="relative w-full pt-9vh md:pt-[20vh]  pt-0  md:h-[90vh] h-[100vh]">
         {/* Background image */}
         <img
           src="/images/miche3.webp"

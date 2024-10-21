@@ -48,8 +48,9 @@ export default function Home() {
         </h1>
         <NavBar
           colors="bg-white text-black"
-          className="h-[17vh] w-full border-b-4 border-red-700"
+          className="h-[17vh] w-full border-b-4 border-red-600 md:border-red-600"
         />
+        <SlideShow />
         <Collage />
         <ActionBar />
         <Welcome />

@@ -8,10 +8,10 @@ export default function NavBar({ colors, className }) {
   return (
     <nav
       className={`${colors} flex flex-col w-screen justify-center items-center shadow-2xl z-50 ${className} ${
-        isOpen ? "h-auto" : "h-[20vh]"
+        isOpen ? "h-auto" : "h-[9vh]"
       } md:h-[20vh]`}
     >
-      <div className="flex justify-between items-center w-full px-4 h-full md:w-1/2 md:justify-center">
+      <div className="flex justify-between items-center w-full md:px-4 h-full md:w-1/2 md:justify-center">
         <div>
           {/* Ensure a higher resolution logo is available */}
           <a href="/">
@@ -27,13 +27,13 @@ export default function NavBar({ colors, className }) {
             />
           </a>
         </div>
-        <div className="md:hidden">
+        <div className="self-end mr-1 md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="text-gray-800 focus:outline-none"
           >
             <svg
-              className="w-10 h-10" // Larger hamburger icon for small screens
+              className="w-12 h-12" // Larger hamburger icon for small screens
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
