@@ -29,6 +29,7 @@ export default function NavBar({ colors, className }) {
         </div>
         <div className="self-end mr-1 md:hidden">
           <button
+            aria-label="Open navigation menu"
             onClick={() => setIsOpen(!isOpen)}
             className="text-gray-800 focus:outline-none"
           >
