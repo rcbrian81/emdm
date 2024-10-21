@@ -35,5 +35,5 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow-x: hidden; /* Optional: prevents horizontal scrolling */
+  overflow-x: hidden;
 }

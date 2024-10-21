@@ -21,7 +21,7 @@ export default function Welcome() {
           </p>
         </div>
 
-        <div className="md:w-2/5 w-full p-8 sm:p-16 bg-gray-800 text-white h-full md:h-[89vh]">
+        <div className="md:w-2/5 w-full p-8 sm:p-16 bg-gray-800 text-white h-full md:h-[89vh] hidden md:block">
           <div className="flex flex-col justify-center items-center text-left space-y-4">
             <div>
               <h2 className="text-2xl font-bold mb-2">Hours</h2>

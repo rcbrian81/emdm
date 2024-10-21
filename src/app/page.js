@@ -50,11 +50,11 @@ export default function Home() {
           colors="bg-white text-black"
           className="h-[17vh] w-full border-b-4 border-red-700"
         />
-        <SlideShow className="h-[80vh]  w-full" />
+        <Collage />
         <ActionBar />
         <Welcome />
+
         <Announcements />
-        <Collage />
         <Mariscos />
         <Micheladas />
         <Tacos_Burritos />
