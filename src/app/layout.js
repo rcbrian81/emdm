@@ -39,10 +39,11 @@ export default function RootLayout({ children }) {
       <head>
         {/* Google Analytics */}
         <script
-          async
+          defer
           src="https://www.googletagmanager.com/gtag/js?id=G-CGKCSFQ5D1"
         ></script>
         <script
+          defer
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
