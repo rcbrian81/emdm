@@ -5,8 +5,8 @@ import Image from "next/image";
 
 export default function Slideshow({ className }) {
   const images = [
-    "/images/miche3.webp",
     "/images/slideshow1.webp",
+    "/images/miche3.webp",
     "/images/slideshow2.webp",
 
     "/images/slideshow3.webp",
