@@ -8,10 +8,10 @@ export default function NavBar({ colors, className }) {
   return (
     <nav
       className={`${colors} flex flex-col w-screen justify-center items-center shadow-2xl z-50 ${className} ${
-        isOpen ? "h-auto" : "h-[9vh]"
+        isOpen ? "h-auto" : "h-[12vh]"
       } md:h-[20vh]`}
     >
-      <div className="flex justify-between items-center w-full md:px-4 h-full md:w-1/2 md:justify-center">
+      <div className="flex justify-between items-center w-full pl-2 md:px-4 h-full md:w-1/2 md:justify-center">
         <div>
           {/* Ensure a higher resolution logo is available */}
           <a href="/">
@@ -19,8 +19,8 @@ export default function NavBar({ colors, className }) {
               src="/images/nav_logo.webp"
               alt="Logo"
               layout="intrinsic"
-              width={300} // Smaller logo width for mobile
-              height={64} // Smaller logo height for mobile
+              width={200} // Smaller logo width for mobile
+              height={21} // Smaller logo height for mobile
               sizes="(max-width: 768px) 300px, 500px" // Serve smaller image on mobile, larger image on bigger screens
               objectFit="contain"
               className="md:w-[500px] md:h-[106px]" // Larger logo for larger screens
@@ -33,7 +33,7 @@ export default function NavBar({ colors, className }) {
             className="text-gray-800 focus:outline-none"
           >
             <svg
-              className="w-12 h-12" // Larger hamburger icon for small screens
+              className="w-13 h-12" // Larger hamburger icon for small screens
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
