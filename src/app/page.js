@@ -8,8 +8,9 @@ import Collage from "./components/Collage.js";
 import Mariscos from "./components/Mariscos.js";
 import Micheladas from "./components/Micheladas.js";
 import Tacos_Burritos from "./components/Tacos&Burritos.js";
-import Announcements from "./components/Announcements.js";
+import Announcement from "./components/Announcements.js";
 import Footer from "./components/Footer.js";
+import Content from "./components/Content.js";
 
 export default function Home() {
   return (
@@ -51,11 +52,28 @@ export default function Home() {
           className="h-[17vh] w-full border-b-4 border-red-600 md:border-red-600"
         />
         <SlideShow />
+        <Announcement
+          title="Michelada Mondays"
+          titleColor="text-red-500"
+          price="$8"
+          days="Mondays"
+          time="After 4pm"
+          description="Every Monday after 4pm. Oceanside's Best Micheladas & Mexican Food!"
+          className="bg-black"
+        />
         <Collage />
         <ActionBar />
         <Welcome />
 
-        <Announcements />
+        <Announcement
+          title=" Happy Hour 🍻"
+          days="Monday to Friday "
+          time="4pm-7pm"
+          description="for 12 oz
+        beers & great food!"
+          price="$4"
+        />
+        <Content />
         <Mariscos />
         <Micheladas />
         <Tacos_Burritos />

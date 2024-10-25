@@ -8,11 +8,11 @@ export default function Tacos_Burritos() {
           <a href="/burritos">Mexican Staples</a>
         </h3>
         <p className="text-lg md:text-2xl">
-          Our menu proudly features the beloved staples of Mexican
-          cuisine—tacos, burritos, and quesadillas. Prepared with the same care
-          and authenticity as everything we serve, these classics are perfect
-          for those seeking familiar, flavorful favorites. All here At El Mundo
-          De Mariscos in Oceanside, CA.
+          Our menu proudly showcases beloved staples of Mexican cuisine—tacos,
+          burritos, and quesadillas—all crafted with the same authenticity and
+          care that defines everything we serve. For those seeking familiar,
+          flavorful favorites, join us at El Mundo De Mariscos in Oceanside, CA,
+          for a true taste of Mexico.
         </p>
       </div>
 

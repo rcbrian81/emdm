@@ -19,10 +19,10 @@ export default function Micheladas() {
           <a href="micheladas">Micheladas</a>
         </h3>
         <p className="text-lg md:text-2xl text-white">
-          Beloved by our customers, our micheladas are a refreshing mix of
-          Clamato, tomato juice, and a full 12oz beer, all perfectly balanced
-          with our house-made chili powder. Cold, bold, and uniquely flavorful—
-          this Mexican classic is a must-try.
+          A customer favorite, our Micheladas blend Clamato, tomato juice, and a
+          full 12oz beer, perfected with our house-made chili powder. Cold,
+          bold, and flavorful—this Mexican classic at El Mundo De Mariscos in
+          Oceanside, CA, is a must-try."
         </p>
       </div>
     </div>
