@@ -8,9 +8,12 @@ export default function OutCrop({
   imageSrc,
   imagePosition = "left",
   alt,
+  children,
+  id,
 }) {
   return (
     <div
+      id={id}
       className={`flex flex-col md:flex-row ${
         imagePosition === "left" ? "md:flex-row" : "md:flex-row-reverse"
       } items-center justify-center h-auto p-8 ${className} ${rounded} ${margin} ${colors}`}
@@ -25,6 +28,7 @@ export default function OutCrop({
       <div className="w-full md:w-1/2">
         <h2 className="text-3xl md:text-5xl font-bold  mb-4">{title}</h2>
         <p className="text-md md:text-lg leading-relaxed">{text}</p>
+        {children}
       </div>
     </div>
   );
