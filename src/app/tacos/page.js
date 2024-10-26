@@ -1,29 +1,30 @@
 import Image from "next/image";
+
 import NavBar from "../components/NavBar";
 import OutCrop from "../components/OutCrop";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Best Tacos in Oceanside - El Mundo De Mariscos",
+  title: "El Mundo De Mariscos Best Tacos in Oceanside ",
   description:
-    "Enjoy the best tacos in Oceanside, CA, at El Mundo de Mariscos! From carne asada to shrimp tacos, experience authentic Mexican flavor paired with refreshing drinks and a vibrant atmosphere.",
+    "Indulge in the authentic taste of Mexico with our delicious tacos at El Mundo de Mariscos. From classic carne asada to flavorful shrimp and fish tacos, each one is prepared with fresh ingredients and bold flavors. Pair your tacos with one of our famous micheladas or a refreshing Mexican Coke, and enjoy the vibrant atmosphere during game days with Banda music and more. Whether you're looking for a quick bite or a full meal, our tacos and cold drinks are perfect for any occasion.",
   keywords:
-    "Oceanside tacos, best tacos in Oceanside CA, Mexican food Oceanside, authentic tacos Oceanside, El Mundo de Mariscos",
+    "Tacos, Oceanside, best Tacos, Mexican Food, Mexican drinks, mariscos, El Mundo de Mariscos",
   author: "El Mundo de Mariscos",
   canonical: "https://mundodemariscos.com/tacos",
   openGraph: {
-    title: "Best Tacos in Oceanside - El Mundo De Mariscos",
+    title: "El Mundo De Mariscos - Best Tacos in Oceanside",
     description:
-      "Experience the best tacos in Oceanside, CA, at El Mundo de Mariscos. Authentic flavors, fresh ingredients, and a vibrant atmosphere await you!",
+      "Discover the best Tacos in Oceanside, CA, at El Mundo de Mariscos.",
     image: "",
     url: "https://mundodemariscos.com/tacos",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Best Tacos in Oceanside - El Mundo De Mariscos",
+    title: "El Mundo De Mariscos - Best Tacos in Oceanside",
     description:
-      "Come for the best tacos in Oceanside, CA, at El Mundo de Mariscos! Fresh ingredients, authentic Mexican recipes, and a lively atmosphere await.",
+      "Discover the best Tacos in Oceanside, CA, at El Mundo de Mariscos.",
     image: "",
   },
 };
@@ -38,62 +39,64 @@ export default function Tacos() {
       <div className="relative w-full h-screen">
         <img
           src="/images/tacos.webp"
-          alt="Delicious Oceanside carne asada and adobada tacos served with fresh lime and a grilled pepper."
+          alt="6 Carne Asada & Adobada Tacos served with lime and a perfectley cooked pepper."
           className="object-cover w-full h-full"
           loading="eager"
         />
+
         <h1 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-5xl font-bold p-4">
-          Oceanside's Best Tacos – El Mundo De Mariscos
+          Oceanside's Best Tacos
         </h1>
       </div>
 
       <OutCrop
         title="Our Oceanside Taco Treasures 🌮"
-        text="At El Mundo De Mariscos, we serve the best tacos in Oceanside, CA. Every taco is crafted with fresh ingredients and authentic Mexican flavors, from carne asada to shrimp and adobada. Here’s a taste of our unique Oceanside taco lineup:"
+        text="Each taco we make is a love letter to Mexican cuisine. With every bite, you’ll taste the passion and tradition we put into every single tortilla. Here’s a taste of our taco lineup:"
         rounded="rounded-r-3xl "
         margin="mr-20 mt-10"
         colors="bg-white text-black"
         imagePosition="right"
       />
 
-      <ul className="flex flex-col md:flex-row w-screen md:h-[15vh] bg-white text-black text-4xl gap-5 justify-center items-center py-5">
+      <ul className="flex flex-col md:flex-row w-screen md:h-[15vh] bg-black text-white text-4xl gap-10 justify-center items-center">
         <li className="flex-1 h-full">
           <a
             href="#adobada"
-            className="flex items-center justify-center w-full h-full bg-black text-white rounded-lg transition-all duration-300 transform hover:bg-gray-800 focus:bg-gray-800 active:bg-gray-800 shadow-md"
+            className="flex items-center justify-center w-full h-full hover:text-yellow-500"
           >
-            Adobada Tacos
+            Adobada
           </a>
         </li>
         <li className="flex-1 h-full">
           <a
             href="#carne-asada"
-            className="flex items-center justify-center w-full h-full bg-black text-white rounded-lg transition-all duration-300 transform hover:bg-gray-800 focus:bg-gray-800 active:bg-gray-800 shadow-md"
+            className="flex items-center justify-center w-full h-full hover:text-yellow-500"
           >
-            Carne Asada Tacos
+            Carne Asada
           </a>
         </li>
         <li className="flex-1 h-full">
           <a
             href="#carnitas"
-            className="flex items-center justify-center w-full h-full bg-black text-white rounded-lg transition-all duration-300 transform hover:bg-gray-800 focus:bg-gray-800 active:bg-gray-800 shadow-md"
+            className="flex items-center justify-center w-full h-full hover:text-yellow-500"
           >
-            Carnitas Tacos
+            Carnitas
           </a>
         </li>
         <li className="flex-1 h-full">
           <a
             href="#gobernador"
-            className="flex items-center justify-center w-full h-full bg-black text-white rounded-lg transition-all duration-300 transform hover:bg-gray-800 focus:bg-gray-800 active:bg-gray-800 shadow-md"
+            className="flex items-center justify-center w-full h-full hover:text-yellow-500"
           >
-            Gobernador/Shrimp Tacos
+            Gobernador/Shrimp
           </a>
         </li>
       </ul>
 
       <OutCrop
         title="What Makes Our Tacos the Best in Oceanside? Spoiler Alert: Everything!"
-        text="Wondering what makes El Mundo De Mariscos the home of the best tacos in Oceanside, CA? Here’s why locals and visitors alike rave about our tacos:"
+        text="It’s no accident that people call us the ‘best tacos in Oceanside.’
+        Here’s what sets our tacos apart:"
         rounded="rounded-r-3xl "
         margin="mr-20 mt-10"
         colors="bg-white text-black"
@@ -115,10 +118,11 @@ export default function Tacos() {
           </li>
         </ul>
       </OutCrop>
-
       <OutCrop
         title="Three Thursday Tacos"
-        text="Celebrate taco night every Thursday at El Mundo De Mariscos! Our “Three Thursday Tacos” deal includes three mouthwatering tacos with your choice of fillings—perfectly paired with a refreshing soda for just $9. Or upgrade to our popular michelada for a little extra zing! The best Oceanside tacos at an unbeatable price—available every Thursday!"
+        text="Join us every Thursday for our Three Thursday Tacos deal! Enjoy 3 delicious tacos of your choice, perfectly paired with a refreshing soda for just $9. Feeling like something with a little more kick? Upgrade your drink to our famous michelada for only $15. It’s the perfect combo to enjoy a taste of authentic Mexican flavor and quench your thirst!
+
+Don’t miss out—this deal is available all day Thursday!"
         rounded="rounded-r-3xl "
         margin="mr-20 mt-10"
         colors="bg-green-400 text-black"
@@ -129,38 +133,42 @@ export default function Tacos() {
       <OutCrop
         title="Carne Asada"
         id="carne-asada"
-        text="Looking for the best carne asada tacos in Oceanside, CA? Visit El Mundo De Mariscos for tacos made with perfectly marinated, grilled steak, fresh cilantro, onions, and lime. Our authentic carne asada tacos pair perfectly with a cold drink, such as our micheladas or ice-cold sodas. Experience the authentic flavors of Mexico, right here in Oceanside."
+        text="Looking for the best carne asada tacos in Oceanside? Look no further than El Mundo de Mariscos! Our carne asada tacos are made with juicy, marinated steak, grilled to perfection and served on warm tortillas, topped with fresh cilantro, onions, and a squeeze of lime for that authentic Mexican flavor. Whether you're craving a quick taco or a full meal, our carne asada tacos are sure to satisfy.
+
+Pair your meal with a refreshing drink from our tray of ice-cold sodas, a cold beer, or one of our famous micheladas. Want the perfect pairing? Try our famous micheladas – a zesty mix of beer, lime, and spices – or stop in for happy hour with $4 beers. Experience the vibrant Mexican atmosphere with live Banda and mariachi music, making your meal even more memorable."
         rounded="rounded-l-3xl "
         margin="ml-20 mt-10"
         colors="bg-white text-black"
         imageSrc="tacos.webp"
       />
-
       <OutCrop
         title="Adobada (Al Pastor)"
         id="adobada"
-        text="Discover the bold flavors of adobada tacos in Oceanside, CA, at El Mundo De Mariscos. Our tacos are crafted with marinated pork, slow-cooked to perfection, and topped with fresh cilantro and onions. Enjoy these tacos with a classic Mexican Coke for the full experience. Stop by today and try the best adobada tacos Oceanside has to offer!"
+        text="Discover the rich, bold flavors of adobada tacos at El Mundo de Mariscos in Oceanside. Our adobada tacos are crafted with tender pork, marinated in a traditional blend of spices and slow-cooked to perfection. Each taco is topped with fresh cilantro, onions, and a squeeze of lime, wrapped in a warm tortilla for that authentic taste of Mexico.
+Each bite delivers authentic Mexican flavors that are perfectly complemented by an ice-cold Mexican Coca-Cola served in a classic glass bottle. Choose between the regular size or the refreshing 1/2 liter—both made with real cane sugar to provide the ideal balance to the rich, bold taste of our adobada tacos."
         rounded="rounded-r-3xl "
         margin="mr-20 mt-10"
         colors="bg-red-400 text-black"
         imageSrc="tacos3.webp"
         imagePosition="right"
-        alt="6 mouth-watering tacos, 3 of which are Adobada tacos, also known as Al Pastor tacos."
+        alt="6 mouth watering tacos. 3 of which are Adobada tacos also known as Al Pasotr Tacos."
       />
-
       <OutCrop
         title="Carnitas"
         id="carnitas"
-        text="For tender and flavorful carnitas tacos in Oceanside, visit El Mundo De Mariscos! Our carnitas are slow-cooked, served with cilantro, onions, and lime. The best carnitas tacos in Oceanside pair perfectly with an ice-cold Mexican Coke. Join us on game days for a lively atmosphere and enjoy Oceanside's favorite tacos with music and drinks."
+        text="For the best carnitas tacos in Oceanside, look no further than El Mundo de Mariscos. Our crispy yet tender carnitas are slow-cooked and served with fresh cilantro, onions, and lime. To take your meal to the next level, pair it with an iconic Mexican Coca-Cola in a glass bottle. Whether you choose the regular size or the satisfying 1/2 liter, nothing beats the crisp, refreshing taste of Mexican Coke, made with real cane sugar, alongside your favorite tacos.
+
+Join us for game days, enjoy some chips and salsa, and experience the lively atmosphere with Banda and mariachi music. Come in today for a true taste of Mexico with the best carnitas tacos and a classic Mexican Coca-Cola."
         rounded="rounded-l-3xl "
         margin="ml-20 mt-10 mb-10"
         colors="bg-blue-400 text-black"
       />
-
       <OutCrop
         title="Gobernador"
         id="gobernador"
-        text="Taste the best shrimp tacos in Oceanside, CA, at El Mundo De Mariscos. Our gobernador tacos are filled with seasoned shrimp, wrapped in warm tortillas, and served with fresh ingredients. Experience Oceanside's best seafood tacos with a side of chips and salsa, and a refreshing drink to complete your meal!"
+        text="For the best carnitas tacos in Oceanside, look no further than El Mundo de Mariscos. Our crispy yet tender carnitas are slow-cooked and served with fresh cilantro, onions, and lime. To take your meal to the next level, pair it with an iconic Mexican Coca-Cola in a glass bottle. Whether you choose the regular size or the satisfying 1/2 liter, nothing beats the crisp, refreshing taste of Mexican Coke, made with real cane sugar, alongside your favorite tacos.
+
+Join us for game days, enjoy some chips and salsa, and experience the lively atmosphere with Banda and mariachi music. Come in today for a true taste of Mexico with the best carnitas tacos and a classic Mexican Coca-Cola."
         rounded="rounded-r-3xl "
         margin="mr-20 mt-10 mb-10"
         colors="bg-blue-400 text-black"
@@ -170,7 +178,7 @@ export default function Tacos() {
 
       <OutCrop
         title="Ready for Your Next Taco Adventure?"
-        text="Your search for the best tacos in Oceanside ends here! Visit El Mundo De Mariscos to experience authentic Mexican tacos, refreshing drinks, and a vibrant atmosphere. Whether you're local or just visiting, come see why our Oceanside tacos are the talk of the town!"
+        text="Don’t just read about it – come taste what everyone’s talking about! Whether you’re a local or just visiting, El Mundo De Mariscos is the ultimate spot for tacos in Oceanside. Bring your appetite and let us do the rest. 🌮"
         rounded="rounded-r-3xl "
         margin="mr-20 mt-10 mb-10"
         colors=""
