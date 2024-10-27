@@ -16,7 +16,6 @@ export default function Home() {
   return (
     <>
       <Head>
-        <link rel="icon" href="/favicon.webp" />
         <title>El Mundo De Mariscos || Best Mexican Food in Oceanside Ca</title>
         <meta
           name="description"

@@ -18,15 +18,15 @@ export const metadata = {
     "Experience the best Mexican Food &  Mariscos in Oceanside, CA. From our famous ICE-Cold Micheladas to authentic seafood dishes, tacos, and burritos El Mundo de Mariscos offers a refreshing, flavorful dining experience with great music and atmosphere. Visit us today!",
   keywords: "mexican, Oceanside, tacos, micheladas, mariscos, restaurant",
   icons: {
-    icon: "/favicon.webp",
+    icon: "/favicon.ico",
   },
   openGraph: {
-    title: "El Mundo De be",
+    title: "El Mundo De Mariscos",
     description: "A custom description for social media sharing",
     url: "https://mundodemariscos.com",
     images: [
       {
-        url: "/images/favicon.webp",
+        url: "/images/favicon.ico",
         alt: "Fish Logo",
       },
     ],
