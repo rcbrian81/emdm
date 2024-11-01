@@ -1,13 +1,14 @@
+"use client";
 import NavBar from "../components/NavBar";
 import CategorySection from "../components/CategorySection";
 import ActionBar from "../components/ActionBar";
 import Footer from "../components/Footer";
-
+import { useState, useEffect } from "react";
+/*
 export const metadata = {
   title: "El Mundo De Mariscos Mexican Food Menu in Oceanside ",
   description:
-    "Discover the Mexican Food in Oceanside, CA, at El Mundo de Mariscos. Our micheladas are crafted with ice-cold beer, fresh lime juice, and our signature homemade chili powder that customers love. Whether you're enjoying a game day or just craving a refreshing drink, our micheladas offer the perfect balance of flavor and spice, all served in a lively Mexican atmosphere with great music and unbeatable vibes.",
-
+    "Discover the best Mexican food in Oceanside, CA, at El Mundo de Mariscos...",
   author: "El Mundo de Mariscos",
   canonical: "https://mundodemariscos.com/menu",
   openGraph: {
@@ -26,321 +27,55 @@ export const metadata = {
     image: "",
   },
 };
-
+*/
 export default function Menu() {
-  // Sample data for each category
+  const [menuItems, setMenuItems] = useState([]);
+  const [categories, setCategories] = useState({});
 
-  const cockteles = [
-    {
-      name: "Campechana",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Cocktel de Mariscos",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Cocktel Camaron",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Cocktel Mixto",
-      price: "",
-      description: "",
-    },
-  ];
+  useEffect(() => {
+    console.log("starting effect");
+    const startSession = async () => {
+      try {
+        console.log("Attempting to start Session");
+        await fetch("/api/session", { method: "POST" }); // Adjust the API endpoint as needed
+      } catch (error) {
+        console.error("Failed to start session:", error);
+      }
+    };
 
-  const caldos = [
-    {
-      name: "Mariscos",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Levanta Muerto",
-      price: "",
-      description: "",
-    },
-    {
-      name: "7 Mares",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Pescado",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Pescado Y Camaron",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Consome de Camaron",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Caldo Especial",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Pescado",
-      price: "",
-      description: "",
-    },
-  ];
+    startSession();
 
-  const Botanas = [
-    {
-      name: "Mariscada Fria",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Aguachiles",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Ceviche de Pescado",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Ceviche de Camaron",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Camarones Cucaracha",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Camarones Fritos",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Botana del Rey",
-      price: "",
-      description: "",
-    },
-  ];
+    const fetchMenuItems = async () => {
+      try {
+        const response = await fetch("/api_db/menu");
+        if (response.ok) {
+          const data = await response.json();
+          // Group items by category
+          const groupedItems = data.reduce((acc, item) => {
+            if (!acc[item.category]) acc[item.category] = [];
+            acc[item.category].push(item);
+            return acc;
+          }, {});
+          setCategories(groupedItems);
+        } else {
+          console.error("Failed to fetch menu items");
+        }
+      } catch (error) {
+        console.error("Error fetching menu items:", error);
+      }
+    };
+    fetchMenuItems();
+  }, []);
 
-  const Specialties = [
-    {
-      name: "Parillada",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Molcajete",
-      price: "",
-      description: "",
-    },
-  ];
+  // Distribute categories evenly across two columns
+  const categoryKeys = Object.keys(categories);
+  const half = Math.ceil(categoryKeys.length / 2);
+  const column1 = categoryKeys.slice(0, half);
+  const column2 = categoryKeys.slice(half);
 
-  const Tostadas = [
-    {
-      name: "Tostada de Mariscos",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Tostada de Mixto",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Tostada de Camaron",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Ceviche de Pescado",
-      price: "",
-      description: "",
-    },
-  ];
-
-  const Plates = [
-    {
-      name: "Mojara Frita",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Mojara Al Mojo De Ajo",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Frita Con Costa Azul",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Filete Al Mojo de Ajo",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Filete A La Plancha",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Filete Empanizado",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Filete Al Mundo",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Camarones Empanizado",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Camarones Al Mojo De Ajo",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Fajitas",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Plate",
-      price: "",
-      description: "",
-    },
-  ];
-
-  const Tacos = [
-    {
-      name: "Taco",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Fish Taco",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Shredded Beef Taco",
-      price: "",
-      description: "",
-    },
-  ];
-
-  const Nacos_Fires = [
-    {
-      name: "Nachos",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Fries",
-      price: "",
-      description: "",
-    },
-  ];
-
-  const Buritos = [
-    {
-      name: "Burrito",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Burrito de Camaron",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Surf & Turf",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Bean & Cheese",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Veggie",
-      price: "",
-      description: "",
-    },
-  ];
-
-  const Breakfeast = [
-    {
-      name: "Burrito",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Burrito de Camaron",
-      price: "",
-      description: "",
-    },
-  ];
-
-  const Quesadillas = [
-    {
-      name: "Quesadilla",
-      price: "",
-      description: "",
-    },
-  ];
-
-  const Qaxacenos = [
-    {
-      name: "Tayuda",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Fish Taco",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Shredded Beef Taco",
-      price: "",
-      description: "",
-    },
-  ];
-
-  const Kids_Menu = [
-    {
-      name: "Chicken Nuggets & Fires",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Plain Chese Burger & Fries",
-      price: "",
-      description: "",
-    },
-  ];
   return (
     <div
-      className="min-h-screen bg-gray-50  "
+      className="min-h-screen bg-gray-50"
       style={{
         backgroundImage: "url('images/background8.webp')",
         backgroundSize: "cover",
@@ -354,23 +89,25 @@ export default function Menu() {
 
         {/* Grid for two columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Left Column */}
           <div className="space-y-12">
-            <CategorySection title="Specialties" items={Specialties} />
-            <CategorySection title="Oaxaqueños" items={Qaxacenos} />
-            <CategorySection title="Cockteles" items={cockteles} />
-            <CategorySection title="Caldos" items={caldos} />
-            <CategorySection title="Botanas" items={Botanas} />
-
-            <CategorySection title="Quesadillas" items={Quesadillas} />
+            {column1.map((category) => (
+              <CategorySection
+                key={category}
+                title={category}
+                items={categories[category]}
+              />
+            ))}
           </div>
           {/* Right Column */}
           <div className="space-y-12">
-            <CategorySection title="Buritos" items={Buritos} />
-            <CategorySection title="Tacos" items={Tacos} />
-            <CategorySection title="Plates" items={Plates} />
-            <CategorySection title="Naches/Fries" items={Nacos_Fires} />
-            <CategorySection title="Tostadas" items={Tostadas} />
-            <CategorySection title="Kids Menu" items={Kids_Menu} />
+            {column2.map((category) => (
+              <CategorySection
+                key={category}
+                title={category}
+                items={categories[category]}
+              />
+            ))}
           </div>
         </div>
       </div>
