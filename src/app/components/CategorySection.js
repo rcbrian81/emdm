@@ -1,6 +1,6 @@
 import MenuItem from "./MenuItem";
 
-export default function CategorySection({ title, items = [] }) {
+export default function CategorySection({ title, items = [], onAddToCart }) {
   return (
     <section className="mb-12">
       <h2 className="text-3xl font-semibold mb-4">{title}</h2>
@@ -13,6 +13,8 @@ export default function CategorySection({ title, items = [] }) {
               price={item.price}
               description={item.description}
               imageUrl={item.imageUrl} // Optional image support
+              onAddToCart={onAddToCart}
+              foodID={item.id}
             />
           ))
         ) : (

@@ -19,8 +19,10 @@ model MenuItem {
   description String
   price       Int
   category    String   // New field for category
+  cartItems   CartItem[]  // Relationship to CartItem
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
 }
 
 
@@ -35,8 +37,26 @@ model Admin {
 model Session {
   id             String    @id @default(uuid())
   userId         Int?
-  cartItems       String 
+  cartItems      CartItem[] 
   isAuthenticated Boolean   @default(false)
   createdAt      DateTime  @default(now())
   expiresAt      DateTime
+}
+
+model CartItem {
+  id          String    @id @default(uuid())
+  sessionId   String
+  menuItemId  Int 
+  quantity    Int
+  session     Session   @relation(fields: [sessionId], references: [id])
+  menuItem    MenuItem  @relation(fields: [menuItemId], references: [id])
+}
+model Order {
+  id            String     @id @default(uuid())
+  sessionId     String
+  createdAt     DateTime   @default(now())
+  status        String     @default("pending") // E.g., pending, completed, canceled
+  totalPrice    Float
+  cartItems     String       // Store as JSON to simplify structure
+  // Additional fields as needed for more details
 }

@@ -12,7 +12,6 @@ export async function createSession(userId, isAuthenticated) {
     data: {
       id: sessionId,
       userId: userId,
-      cartItems: JSON.stringify([]),
       isAuthenticated: isAuthenticated,
       createdAt: new Date(),
       expiresAt,

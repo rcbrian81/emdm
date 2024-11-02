@@ -22,10 +22,29 @@ CREATE TABLE "Admin" (
 CREATE TABLE "Session" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "userId" INTEGER,
-    "cartItems" TEXT NOT NULL,
     "isAuthenticated" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "expiresAt" DATETIME NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "CartItem" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "sessionId" TEXT NOT NULL,
+    "menuItemId" INTEGER NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    CONSTRAINT "CartItem_sessionId_fkey" FOREIGN KEY ("sessionId") REFERENCES "Session" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "CartItem_menuItemId_fkey" FOREIGN KEY ("menuItemId") REFERENCES "MenuItem" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Order" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "sessionId" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "status" TEXT NOT NULL DEFAULT 'pending',
+    "totalPrice" REAL NOT NULL,
+    "cartItems" TEXT NOT NULL
 );
 
 -- CreateIndex

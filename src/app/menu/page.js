@@ -31,6 +31,7 @@ export const metadata = {
 export default function Menu() {
   const [menuItems, setMenuItems] = useState([]);
   const [categories, setCategories] = useState({});
+  const [cart, setCart] = useState([]); // Cart state
 
   useEffect(() => {
     console.log("starting effect");
@@ -67,6 +68,30 @@ export default function Menu() {
     fetchMenuItems();
   }, []);
 
+  const addToCart = async (foodID, quantity) => {
+    // Update local cart state
+    setCart((prevCart) => [...prevCart, { foodID, quantity }]);
+
+    // Make an API request to update the cart in the session
+    try {
+      const response = await fetch("/api/cart/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ foodID, quantity }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add item to cart");
+      }
+
+      console.log("Added to cart:", { foodID, quantity });
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
+
   // Distribute categories evenly across two columns
   const categoryKeys = Object.keys(categories);
   const half = Math.ceil(categoryKeys.length / 2);
@@ -86,6 +111,12 @@ export default function Menu() {
       <NavBar colors="bg-white text-black" />
       <div className="container text-black mx-auto px-4 py-8 bg-white shadow-xl rounded-lg border border-gray-200 mt-12">
         <h1 className="text-5xl font-bold text-center mb-8">Our Menu</h1>
+        <a
+          href="/checkout"
+          className="bg-green-500 text-white px-4 py-2 rounded mt-4"
+        >
+          Go to Checkout
+        </a>
 
         {/* Grid for two columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -96,6 +127,7 @@ export default function Menu() {
                 key={category}
                 title={category}
                 items={categories[category]}
+                onAddToCart={addToCart}
               />
             ))}
           </div>
@@ -106,6 +138,7 @@ export default function Menu() {
                 key={category}
                 title={category}
                 items={categories[category]}
+                onAddToCart={addToCart}
               />
             ))}
           </div>
