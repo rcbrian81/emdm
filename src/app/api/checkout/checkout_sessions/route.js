@@ -50,7 +50,7 @@ export async function POST(request) {
       line_items: lineItems,
       mode: "payment",
       success_url: `${request.headers.get("origin")}/success`,
-      cancel_url: `${request.headers.get("origin")}/cancel`,
+      cancel_url: `${request.headers.get("origin")}/cart`,
     });
 
     return NextResponse.json({ url: stripeSession.url });

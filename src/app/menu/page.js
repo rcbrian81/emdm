@@ -112,10 +112,10 @@ export default function Menu() {
       <div className="container text-black mx-auto px-4 py-8 bg-white shadow-xl rounded-lg border border-gray-200 mt-12">
         <h1 className="text-5xl font-bold text-center mb-8">Our Menu</h1>
         <a
-          href="/checkout"
+          href="/cart"
           className="bg-green-500 text-white px-4 py-2 rounded mt-4"
         >
-          Go to Checkout
+          Go to Cart
         </a>
 
         {/* Grid for two columns */}
