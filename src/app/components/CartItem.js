@@ -1,4 +1,6 @@
-export function CartItem({ item, onQuantityChange, onRemove }) {
+// CartItem.js
+
+export default function CartItem({ item, handleQuantityChange, handleRemove }) {
   return (
     <div className="cart-item flex justify-between items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
       <div>
@@ -9,7 +11,7 @@ export function CartItem({ item, onQuantityChange, onRemove }) {
         <div className="flex items-center space-x-2 mt-2">
           <button
             className="px-2 py-1 bg-gray-200 rounded"
-            onClick={() => onQuantityChange(item.id, -1)}
+            onClick={() => handleQuantityChange(item.id, -1)}
             disabled={item.quantity <= 1}
           >
             -
@@ -17,7 +19,7 @@ export function CartItem({ item, onQuantityChange, onRemove }) {
           <p className="text-gray-500">Quantity: {item.quantity}</p>
           <button
             className="px-2 py-1 bg-gray-200 rounded"
-            onClick={() => onQuantityChange(item.id, 1)}
+            onClick={() => handleQuantityChange(item.id, 1)}
           >
             +
           </button>
@@ -29,7 +31,7 @@ export function CartItem({ item, onQuantityChange, onRemove }) {
         </p>
         <button
           className="text-red-500 mt-2 hover:underline"
-          onClick={() => onRemove(item.id)}
+          onClick={() => handleRemove(item.id)}
         >
           Remove
         </button>

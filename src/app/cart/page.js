@@ -2,19 +2,19 @@
 
 import { useEffect, useState } from "react";
 import DeliveryForm from "../components/DeliveryForm.js";
-//NEED: Address that is sent to server is the one that was used for the quote not the current text in the input!
-//TLDR: Address can't change from the one that was used for Quote.
+import CartManager from "../components/CartManager";
+
 export default function CheckoutPage() {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [deliveryQuote, setDeliveryQuote] = useState(null); // New state for delivery quote
-  const [loading, setLoading] = useState(true);
+  const [deliveryQuote, setDeliveryQuote] = useState(null);
+  const [loading, setLoading] = useState(true); // Initial loading for cart
+  const [checkoutLoading, setCheckoutLoading] = useState(false); // Loading for checkout redirect
+  const [quoteLoading, setQuoteLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // New state variables for delivery information
   const [pickupAddress, setPickupAddress] = useState("");
   const [pickupPhone, setPickupPhone] = useState("");
-
   const [dropoffAddress, setDropoffAddress] = useState("");
   const [dropoffPhone, setDropoffPhone] = useState("");
   const [deliveryDetailsSubmitted, setDeliveryDetailsSubmitted] =
@@ -24,7 +24,6 @@ export default function CheckoutPage() {
     fetchCart();
   }, []);
 
-  // Fetches cart details on page load
   async function fetchCart() {
     try {
       const response = await fetch("/api/checkout");
@@ -40,10 +39,8 @@ export default function CheckoutPage() {
     }
   }
 
-  // Fetches delivery quote based on inputted delivery details
-  // Fetches delivery quote based on inputted delivery details
   async function fetchDeliveryQuote() {
-    //handleSaveUpdates();
+    setQuoteLoading(true);
     try {
       const response = await fetch("/api/delivery_quote", {
         method: "POST",
@@ -51,40 +48,34 @@ export default function CheckoutPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          external_delivery_id: `order_${Date.now()}`, // Generate a unique ID
+          external_delivery_id: `order_${Date.now()}`,
           pickup_address: "2936 oceanside blvd,  oceanside, CA 92054, USA",
           pickup_phone_number: "7608282465",
           dropoff_address: dropoffAddress,
           dropoff_phone_number: dropoffPhone,
-          items: cartItems, // Pass cart items for context if needed
         }),
       });
 
-      console.log(response);
       if (!response.ok) throw new Error("Failed to fetch delivery quote");
-      const data = await response.json(); // Parse JSON response only once
-      // Example of accessing a field in the response
+
+      const data = await response.json();
       const deliveryFee = data.data.fee / 100;
-      console.log(deliveryFee);
-      //setDeliveryQuote(data.data.fee);
-      // Set the delivery quote data in the state
-      setDeliveryQuote(deliveryFee); // Assuming `estimated_fee` is the field for delivery cost
+      setDeliveryQuote(deliveryFee);
       setTotalPrice((prevTotal) => prevTotal + deliveryFee);
+      setDeliveryDetailsSubmitted(true);
     } catch (err) {
-      setError(err.message);
+      alert("Error in getting quote. Please try again.");
+    } finally {
+      setQuoteLoading(false);
     }
   }
 
-  // Handles form submission for delivery details
   function handleDeliveryDetailsSubmit(e) {
     e.preventDefault();
-    setDeliveryDetailsSubmitted(true);
 
-    fetchDeliveryQuote(); // Fetch quote only after form submission
-    console.log(deliveryDetailsSubmitted);
+    fetchDeliveryQuote();
   }
 
-  // Handles quantity change for an item in the cart
   function handleQuantityChange(itemId, delta) {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
@@ -93,7 +84,6 @@ export default function CheckoutPage() {
     );
   }
 
-  // Removes an item from the cart
   async function handleRemove(itemId) {
     try {
       const response = await fetch("/api/cart/remove", {
@@ -103,7 +93,6 @@ export default function CheckoutPage() {
       });
       if (!response.ok) throw new Error("Failed to remove item");
 
-      // Remove the item from the local state after successful deletion
       setCartItems((prevItems) =>
         prevItems.filter((item) => item.id !== itemId)
       );
@@ -112,7 +101,6 @@ export default function CheckoutPage() {
     }
   }
 
-  // Saves updates to the cart items on the server
   async function handleSaveUpdates() {
     try {
       const response = await fetch("/api/cart/update", {
@@ -122,22 +110,18 @@ export default function CheckoutPage() {
       });
       if (!response.ok) throw new Error("Failed to save updates");
 
-      // Re-fetch cart after saving updates, if needed
       fetchCart();
     } catch (err) {
       setError(err.message);
     }
   }
 
-  // Calculates the total price based on items and their quantities
   function calculateTotalPrice(items) {
     return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   }
 
-  // Redirects to checkout page
   const handleCheckout = async () => {
-    console.log("Checking Out Clicked");
-
+    setCheckoutLoading(true); // Set loading state for checkout
     try {
       const response = await fetch("/api/checkout/checkout_sessions", {
         method: "POST",
@@ -151,26 +135,29 @@ export default function CheckoutPage() {
       });
 
       const { url } = await response.json();
-
-      window.location.href = url; // Redirect to Stripe Checkout page
+      window.location.href = url;
     } catch (error) {
       console.error("Error redirecting to checkout:", error);
+      setError("Failed to redirect to checkout. Please try again.");
     } finally {
-      setLoading(false);
+      setCheckoutLoading(false); // Clear loading state after redirect or error
     }
   };
 
-  // Updates total price whenever cart items change
   useEffect(() => {
     setTotalPrice(calculateTotalPrice(cartItems));
   }, [cartItems]);
 
   if (loading)
     return (
-      <p className="text-center mt-4 text-bold text-2xl">
-        Loading your cart...
-      </p>
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin mb-4"></div>
+          <p className="text-2xl font-semibold">Loading your cart...</p>
+        </div>
+      </div>
     );
+
   if (error)
     return <p className="text-center text-red-500 mt-4">Error: {error}</p>;
 
@@ -178,128 +165,79 @@ export default function CheckoutPage() {
     <div className="checkout-page max-w-2xl mx-auto p-6 bg-gray-50 rounded-lg shadow-lg text-black">
       <h1 className="text-2xl font-semibold text-center mb-6">Your Cart</h1>
 
-      {/* Display cart items and total */}
-      <div className="cart-items space-y-4">
-        {cartItems.length > 0 ? (
-          cartItems.map((item, index) => (
-            <div
-              key={index}
-              className="cart-item flex justify-between items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200"
-            >
-              <div>
-                <p className="text-lg font-medium">{item.name}</p>
-                <p className="text-gray-500">
-                  Price per unit: ${item.price.toFixed(2)}
-                </p>
-                <div className="flex items-center space-x-2 mt-2">
-                  <button
-                    className="px-2 py-1 bg-gray-200 rounded"
-                    onClick={() => handleQuantityChange(item.id, -1)}
-                    disabled={item.quantity <= 1}
-                  >
-                    -
-                  </button>
-                  <p className="text-gray-500">Quantity: {item.quantity}</p>
-                  <button
-                    className="px-2 py-1 bg-gray-200 rounded"
-                    onClick={() => handleQuantityChange(item.id, 1)}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-lg font-semibold">
-                  Item Total: ${(item.price * item.quantity).toFixed(2)}
-                </p>
-                <button
-                  className="text-red-500 mt-2 hover:underline"
-                  onClick={() => handleRemove(item.id)}
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500">Your cart is empty.</p>
-        )}
-      </div>
-
-      {/* Save Updates Button */}
-      <div className="text-center mt-6">
-        <button
-          onClick={handleSaveUpdates}
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-        >
-          Save Updates
-        </button>
-      </div>
+      <CartManager
+        cartItems={cartItems}
+        handleQuantityChange={handleQuantityChange}
+        handleRemove={handleRemove}
+        handleSaveUpdates={handleSaveUpdates}
+      />
 
       {!deliveryDetailsSubmitted && (
-        // HTML B: Rendered if deliveryDetailsSubmitted is true
-        <form
-          onSubmit={handleDeliveryDetailsSubmit}
-          className="space-y-4 mb-6 mt-6"
-        >
-          <h2 className="text-center text-bold text-2xl">
-            Delivery Information
-          </h2>
-          <div>
-            <label className="block text-gray-700">Dropoff Address</label>
-            <input
-              type="text"
-              className="w-full px-3 py-2 border rounded"
-              value={dropoffAddress}
-              onChange={(e) => setDropoffAddress(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700">Dropoff Phone Number</label>
-            <input
-              type="tel"
-              className="w-full px-3 py-2 border rounded"
-              value={dropoffPhone}
-              onChange={(e) => setDropoffPhone(e.target.value)}
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            Get Delivery Quote
-          </button>
-        </form>
+        <DeliveryForm
+          dropoffAddress={dropoffAddress}
+          dropoffPhone={dropoffPhone}
+          setDropoffAddress={setDropoffAddress}
+          setDropoffPhone={setDropoffPhone}
+          handleDeliveryDetailsSubmit={handleDeliveryDetailsSubmit}
+        />
       )}
-      {/* Total, Delivery Fee, and Pay Button */}
+
       <div className="total mt-8 p-4 bg-gray-100 rounded-lg text-center">
-        {deliveryQuote && (
-          <p className="text-lg text-gray-600">
-            Estimated Delivery Fee: ${deliveryQuote.toFixed(2)}
-          </p>
-        )}
-        <h2 className="text-xl font-semibold">
-          Total: ${totalPrice.toFixed(2)}
-          {!deliveryDetailsSubmitted && <p>+ Devlivery</p>}
-          {!deliveryDetailsSubmitted && <p>+ taxes</p>}
-          {!deliveryDetailsSubmitted && (
-            <p>
-              Please submit Delivery Info & view delivery quote before
-              continuing to checkout.
+        {quoteLoading ? (
+          <div className="flex justify-center items-center space-x-2">
+            <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+            <p className="text-lg font-semibold text-gray-700">
+              Calculating Delivery Fee...
             </p>
+          </div>
+        ) : (
+          deliveryQuote && (
+            <p className="text-lg text-gray-600">
+              Estimated Delivery Fee: ${deliveryQuote.toFixed(2)}
+            </p>
+          )
+        )}
+
+        <h2 className="text-xl font-semibold">
+          Total:{" "}
+          {quoteLoading ? (
+            <div className="flex justify-center items-center space-x-2">
+              <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+              <p className="text-lg font-semibold text-gray-700">
+                Calculating...
+              </p>
+            </div>
+          ) : (
+            `$${totalPrice.toFixed(2)}`
           )}
         </h2>
+
+        {!deliveryDetailsSubmitted && (
+          <p>
+            Please submit Delivery Info & view delivery quote before continuing
+            to checkout.
+          </p>
+        )}
 
         <button
           onClick={handleCheckout}
           className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          disabled={!deliveryQuote} // Disable until quote is available
+          disabled={!deliveryQuote || checkoutLoading}
         >
-          Go To Checkout
+          {checkoutLoading ? "Redirecting..." : "Go To Checkout"}
         </button>
       </div>
+
+      {checkoutLoading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="text-center">
+            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin mb-4"></div>
+            <p className="text-2xl font-semibold text-white">
+              Loading Payment Page...
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
