@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { PrismaClient } from "@prisma/client";
+import { doordashQuote } from "@/lib/doordashUtil";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const prisma = new PrismaClient();
@@ -10,6 +11,20 @@ export async function POST(request) {
   try {
     const cookie = request.cookies.get("session_id");
     const sessionId = cookie?.value;
+    const { dropoff_address, dropoff_phone_number } = await request.json();
+    console.log(dropoff_address);
+    console.log(dropoff_phone_number);
+
+    const deliveryDetails = JSON.stringify({
+      external_delivery_id: `order_${Date.now()}`, // Generate a unique ID
+      pickup_address: "2936 oceanside blvd,  oceanside, CA 92054, USA",
+      pickup_phone_number: "7608282465",
+      dropoff_address: dropoff_address,
+      dropoff_phone_number: dropoff_phone_number,
+    });
+    const quoteObject = await doordashQuote(deliveryDetails);
+    const deliveryFee = quoteObject.data.fee;
+    console.log(deliveryFee);
     console.log("LlllllLLLLLLLLLLLLLLLLLLLLLLL");
     // Retrieve the session and associated cart items from the database
     const session = await prisma.session.findUnique({
@@ -43,6 +58,19 @@ export async function POST(request) {
       },
       quantity: cartItem.quantity,
     }));
+    const deliveryLineItem = {
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: "Delivery Fee",
+        },
+        unit_amount: deliveryFee, // Set this to the delivery fee amount in cents (e.g., $5.00 = 500 cents)
+      },
+      quantity: 1,
+    };
+
+    // Add the delivery fee to the lineItems array
+    lineItems.push(deliveryLineItem);
     console.log(lineItems);
     // Create the Stripe session
     const stripeSession = await stripe.checkout.sessions.create({
@@ -51,6 +79,12 @@ export async function POST(request) {
       mode: "payment",
       success_url: `${request.headers.get("origin")}/success`,
       cancel_url: `${request.headers.get("origin")}/cart`,
+      client_reference_id: sessionId,
+      metadata: {
+        sessionId: sessionId, // Your own session ID
+        dropoff_address: dropoff_address, // User’s address
+        dropoff_phone_number: dropoff_phone_number, // User’s phone number
+      },
     });
 
     return NextResponse.json({ url: stripeSession.url });

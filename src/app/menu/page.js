@@ -1,44 +1,20 @@
 "use client";
+import { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import CategorySection from "../components/CategorySection";
 import ActionBar from "../components/ActionBar";
 import Footer from "../components/Footer";
-import { useState, useEffect } from "react";
-/*
-export const metadata = {
-  title: "El Mundo De Mariscos Mexican Food Menu in Oceanside ",
-  description:
-    "Discover the best Mexican food in Oceanside, CA, at El Mundo de Mariscos...",
-  author: "El Mundo de Mariscos",
-  canonical: "https://mundodemariscos.com/menu",
-  openGraph: {
-    title: "El Mundo De Mariscos - Best Mexican Food in Oceanside",
-    description:
-      "Discover the best micheladas in Oceanside, CA, at El Mundo de Mariscos.",
-    image: "",
-    url: "https://mundodemariscos.com/menu",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "El Mundo De Mariscos - Best Mexican Food in Oceanside",
-    description:
-      "Discover the Mexican Food in Oceanside, CA, at El Mundo de Mariscos.",
-    image: "",
-  },
-};
-*/
+
 export default function Menu() {
   const [menuItems, setMenuItems] = useState([]);
   const [categories, setCategories] = useState({});
   const [cart, setCart] = useState([]); // Cart state
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
-    console.log("starting effect");
     const startSession = async () => {
       try {
-        console.log("Attempting to start Session");
-        await fetch("/api/session", { method: "POST" }); // Adjust the API endpoint as needed
+        await fetch("/api/session", { method: "POST" });
       } catch (error) {
         console.error("Failed to start session:", error);
       }
@@ -58,6 +34,7 @@ export default function Menu() {
             return acc;
           }, {});
           setCategories(groupedItems);
+          setLoading(false); // Set loading to false after items are fetched
         } else {
           console.error("Failed to fetch menu items");
         }
@@ -69,10 +46,8 @@ export default function Menu() {
   }, []);
 
   const addToCart = async (foodID, quantity) => {
-    // Update local cart state
     setCart((prevCart) => [...prevCart, { foodID, quantity }]);
 
-    // Make an API request to update the cart in the session
     try {
       const response = await fetch("/api/cart/add", {
         method: "POST",
@@ -92,7 +67,6 @@ export default function Menu() {
     }
   };
 
-  // Distribute categories evenly across two columns
   const categoryKeys = Object.keys(categories);
   const half = Math.ceil(categoryKeys.length / 2);
   const column1 = categoryKeys.slice(0, half);
@@ -109,41 +83,73 @@ export default function Menu() {
       }}
     >
       <NavBar colors="bg-white text-black" />
-      <div className="container text-black mx-auto px-4 py-8 bg-white shadow-xl rounded-lg border border-gray-200 mt-12">
-        <h1 className="text-5xl font-bold text-center mb-8">Our Menu</h1>
-        <a
-          href="/cart"
-          className="bg-green-500 text-white px-4 py-2 rounded mt-4"
-        >
-          Go to Cart
-        </a>
 
-        {/* Grid for two columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Left Column */}
-          <div className="space-y-12">
-            {column1.map((category) => (
-              <CategorySection
-                key={category}
-                title={category}
-                items={categories[category]}
-                onAddToCart={addToCart}
-              />
-            ))}
+      {/* Floating Go to Cart Button */}
+      <a
+        href="/cart"
+        className="fixed top-8 right-8 bg-green-500 text-white px-4 py-3 rounded-full shadow-lg hover:bg-green-600 transition duration-300"
+      >
+        Go to Cart
+      </a>
+
+      <div className=" container text-black mx-auto px-4 py-8 bg-white shadow-xl rounded-lg border border-gray-200 mt-12 ">
+        <h1 className="text-5xl font-bold text-center mb-8">Our Menu</h1>
+
+        {/* Show loading message if items are still loading */}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center h-1/2 text-center border border-black">
+            <svg
+              className="animate-spin h-12 w-12 text-blue-500 mb-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 4.418 3.582 8 8 8v-4.709z"
+              ></path>
+            </svg>
+            <p className="text-2xl font-semibold text-gray-700 animate-pulse">
+              Loading menu...
+            </p>
           </div>
-          {/* Right Column */}
-          <div className="space-y-12">
-            {column2.map((category) => (
-              <CategorySection
-                key={category}
-                title={category}
-                items={categories[category]}
-                onAddToCart={addToCart}
-              />
-            ))}
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* Left Column */}
+            <div className="space-y-12">
+              {column1.map((category) => (
+                <CategorySection
+                  key={category}
+                  title={category}
+                  items={categories[category]}
+                  onAddToCart={addToCart}
+                />
+              ))}
+            </div>
+            {/* Right Column */}
+            <div className="space-y-12">
+              {column2.map((category) => (
+                <CategorySection
+                  key={category}
+                  title={category}
+                  items={categories[category]}
+                  onAddToCart={addToCart}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
+
       <ActionBar />
       <Footer />
     </div>
