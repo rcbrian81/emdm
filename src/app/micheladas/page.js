@@ -3,7 +3,7 @@ import Image from "next/image";
 import NavBar from "../components/NavBar";
 import OutCrop from "../components/OutCrop";
 import Footer from "../components/Footer";
-//for git
+
 export const metadata = {
   title: "El Mundo De Mariscos Best Micheladas in Oceanside ",
   description:

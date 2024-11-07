@@ -36,7 +36,24 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>{/* Google Analytics */}</head>
+      <head>
+        {/* Google Analytics */}
+        <script
+          defer
+          src="https://www.googletagmanager.com/gtag/js?id=G-CGKCSFQ5D1"
+        ></script>
+        <script
+          defer
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-CGKCSFQ5D1');
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
