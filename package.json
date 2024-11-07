@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma migrate deploy --preview-feature && next build",
+    "build": "echo 'Running migrate deploy' && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
     "seed": "node prisma/seed.js",

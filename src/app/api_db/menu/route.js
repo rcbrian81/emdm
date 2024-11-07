@@ -2,7 +2,6 @@ import prisma from "@/lib/prisma";
 
 export async function GET() {
   console.log("Database URL:", process.env.DATABASE_URL);
-  res.status(200).json({ message: "Check logs for DATABASE_URL" });
   try {
     // Fetch all menu items from the database
     const menuItems = await prisma.menuItem.findMany();
