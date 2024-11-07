@@ -67,7 +67,7 @@ export default function Menu() {
     {
       name: "7 Mares",
       price: "",
-      description: "",
+      description: "caldo",
     },
     {
       name: "Pescado",
