@@ -11,13 +11,15 @@ export async function POST(request) {
   try {
     const cookie = request.cookies.get("session_id");
     const sessionId = cookie?.value;
-    const { dropoff_address, dropoff_phone_number } = await request.json();
+    const { dropoff_address, dropoff_phone_number, name } =
+      await request.json();
     console.log(dropoff_address);
     console.log(dropoff_phone_number);
+    console.log(name);
 
     const deliveryDetails = JSON.stringify({
       external_delivery_id: `order_${Date.now()}`, // Generate a unique ID
-      pickup_address: "2936 oceanside blvd,  oceanside, CA 92054, USA",
+      pickup_address: "2936 oceanside blvd, oceanside, CA 92054, USA",
       pickup_phone_number: "7608282465",
       dropoff_address: dropoff_address,
       dropoff_phone_number: dropoff_phone_number,
@@ -26,6 +28,7 @@ export async function POST(request) {
     const deliveryFee = quoteObject.data.fee;
     console.log(deliveryFee);
     console.log("LlllllLLLLLLLLLLLLLLLLLLLLLLL");
+
     // Retrieve the session and associated cart items from the database
     const session = await prisma.session.findUnique({
       where: { id: sessionId },
@@ -47,7 +50,7 @@ export async function POST(request) {
       );
     }
 
-    // Calculate the total price and prepare line items for Stripe
+    // Prepare line items for Stripe
     const lineItems = session.cartItems.map((cartItem) => ({
       price_data: {
         currency: "usd",
@@ -58,21 +61,23 @@ export async function POST(request) {
       },
       quantity: cartItem.quantity,
     }));
+
+    // Add the delivery fee as a line item
     const deliveryLineItem = {
       price_data: {
         currency: "usd",
         product_data: {
           name: "Delivery Fee",
         },
-        unit_amount: deliveryFee, // Set this to the delivery fee amount in cents (e.g., $5.00 = 500 cents)
+        unit_amount: deliveryFee, // Set this to the delivery fee amount in cents
       },
       quantity: 1,
     };
-
-    // Add the delivery fee to the lineItems array
     lineItems.push(deliveryLineItem);
+
     console.log(lineItems);
-    // Create the Stripe session
+
+    // Create the Stripe session with totalPriceWithoutDelivery in metadata
     const stripeSession = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
@@ -81,9 +86,11 @@ export async function POST(request) {
       cancel_url: `${request.headers.get("origin")}/cart`,
       client_reference_id: sessionId,
       metadata: {
-        sessionId: sessionId, // Your own session ID
-        dropoff_address: dropoff_address, // User’s address
-        dropoff_phone_number: dropoff_phone_number, // User’s phone number
+        sessionId: sessionId,
+        dropoff_address: dropoff_address,
+        dropoff_phone_number: dropoff_phone_number,
+        deliveryQuote: deliveryFee, // Store total price without delivery
+        name: name,
       },
     });
 

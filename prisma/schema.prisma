@@ -53,6 +53,7 @@ model CartItem {
 }
 model Order {
   id            String     @id @default(uuid())
+  name          String     @default("none") 
   sessionId     String
   createdAt     DateTime   @default(now())
   status        String     @default("pending") // E.g., pending, completed, canceled

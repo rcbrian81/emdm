@@ -7,6 +7,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [confirmedOrders, setConfirmedOrders] = useState({});
+  const [dataDisplay, setDataDisplay] = useState(null);
 
   useEffect(() => {
     async function fetchPaidOrders() {
@@ -17,6 +18,8 @@ export default function Dashboard() {
         }
         const data = await response.json();
         setPaidOrders(data);
+        console.log(data);
+        setDataDisplay(data);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -56,6 +59,9 @@ export default function Dashboard() {
                   Order ID
                 </th>
                 <th className="w-1/6 px-4 py-2 border-b bg-gray-50 font-medium text-gray-600">
+                  Order Name
+                </th>
+                <th className="w-1/6 px-4 py-2 border-b bg-gray-50 font-medium text-gray-600">
                   Total Price
                 </th>
                 <th className="w-3/6 px-4 py-2 border-b bg-gray-50 font-medium text-gray-600">
@@ -76,6 +82,9 @@ export default function Dashboard() {
                 >
                   <td className="px-4 py-3 border-b text-gray-700">
                     {order.id}
+                  </td>
+                  <td className="px-4 py-3 border-b text-gray-700">
+                    {order.name}
                   </td>
                   <td className="px-4 py-3 border-b text-gray-700">
                     ${order.totalPrice.toFixed(2)}

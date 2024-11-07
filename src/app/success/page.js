@@ -7,8 +7,10 @@ export default function Success() {
           Thank you for your order from El Mundo De Mariscos!
         </p>
         <p className="text-md text-gray-600">
-          Enjoy the best Mexican food and mariscos in Oceanside, CA. We’re
-          excited to serve you!
+          We’re preparing everything for delivery. Keep an eye on your phone –
+          you’ll receive a text message soon with the details and estimated
+          arrival time for your order. If you have any questions, feel free to
+          contact us. (760) 231-7355
         </p>
       </div>
     </div>

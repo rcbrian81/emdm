@@ -12,6 +12,7 @@ export default function CheckoutPage() {
   const [checkoutLoading, setCheckoutLoading] = useState(false); // Loading for checkout redirect
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [name, setName] = useState(""); // New state for customer name
 
   const [pickupAddress, setPickupAddress] = useState("");
   const [pickupPhone, setPickupPhone] = useState("");
@@ -72,7 +73,6 @@ export default function CheckoutPage() {
 
   function handleDeliveryDetailsSubmit(e) {
     e.preventDefault();
-
     fetchDeliveryQuote();
   }
 
@@ -129,6 +129,7 @@ export default function CheckoutPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          name, // Include the name in the checkout session
           dropoff_address: dropoffAddress,
           dropoff_phone_number: dropoffPhone,
         }),
@@ -181,7 +182,14 @@ export default function CheckoutPage() {
           handleDeliveryDetailsSubmit={handleDeliveryDetailsSubmit}
         />
       )}
-
+      <label>Name for order:</label>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="w-full p-2 mt-2 border rounded"
+        required
+      />
       <div className="total mt-8 p-4 bg-gray-100 rounded-lg text-center">
         {quoteLoading ? (
           <div className="flex justify-center items-center space-x-2">
@@ -213,16 +221,19 @@ export default function CheckoutPage() {
         </h2>
 
         {!deliveryDetailsSubmitted && (
-          <p>
-            Please submit Delivery Info & view delivery quote before continuing
-            to checkout.
-          </p>
+          <div>
+            <p className="font-bold">+ delivery</p>
+            <p>
+              Please submit Delivery Info & view delivery quote before
+              continuing to checkout.
+            </p>
+          </div>
         )}
 
         <button
           onClick={handleCheckout}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          disabled={!deliveryQuote || checkoutLoading}
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-green-500 w-full"
+          disabled={!deliveryQuote || checkoutLoading || !name} // Disable if name is empty
         >
           {checkoutLoading ? "Redirecting..." : "Go To Checkout"}
         </button>

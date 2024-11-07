@@ -9,6 +9,7 @@ export async function GET() {
       where: { status: "paid" },
       select: {
         id: true,
+        name: true, // Include 'name' in the selection
         totalPrice: true,
         cartItems: true,
       },
@@ -17,6 +18,7 @@ export async function GET() {
     // Process and format data to send only the required information
     const formattedOrders = paidOrders.map((order) => ({
       id: order.id,
+      name: order.name,
       totalPrice: order.totalPrice,
       items: JSON.parse(order.cartItems).map((cartItem) => ({
         name: cartItem.menuItem.name,
@@ -24,6 +26,7 @@ export async function GET() {
       })),
     }));
 
+    console.log(formattedOrders);
     return NextResponse.json(formattedOrders);
   } catch (error) {
     console.error("Dashboard error:", error);
