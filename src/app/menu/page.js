@@ -6,19 +6,30 @@ import ActionBar from "../components/ActionBar";
 import Footer from "../components/Footer";
 
 export default function Menu() {
-  const [menuItems, setMenuItems] = useState([]);
-  const [categories, setCategories] = useState({});
-  const [cart, setCart] = useState([]); // Cart state
-  const [loading, setLoading] = useState(true); // Loading state
-
-  useEffect(() => {
-    const startSession = async () => {
-      try {
-        await fetch("/api/session", { method: "POST" });
-      } catch (error) {
-        console.error("Failed to start session:", error);
-      }
-    };
+  // Sample data for each category
+  //for git
+  const cockteles = [
+    {
+      name: "Campechana",
+      price: "",
+      description: "",
+    },
+    {
+      name: "Cocktel de Mariscos",
+      price: "",
+      description: "",
+    },
+    {
+      name: "Cocktel Camaron",
+      price: "",
+      description: "",
+    },
+    {
+      name: "Cocktel Mixto",
+      price: "",
+      description: "",
+    },
+  ];
 
     startSession();
 
