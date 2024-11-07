@@ -31,7 +31,48 @@ export default function Menu() {
     },
   ];
 
-    startSession();
+  const caldos = [
+    {
+      name: "Mariscos",
+      price: "",
+      description: "",
+    },
+    {
+      name: "Levanta Muerto",
+      price: "",
+      description: "",
+    },
+    {
+      name: "7 Mares",
+      price: "",
+      description: "caldo",
+    },
+    {
+      name: "Pescado",
+      price: "",
+      description: "",
+    },
+    {
+      name: "Pescado Y Camaron",
+      price: "",
+      description: "",
+    },
+    {
+      name: "Consome de Camaron",
+      price: "",
+      description: "",
+    },
+    {
+      name: "Caldo Especial",
+      price: "",
+      description: "",
+    },
+    {
+      name: "Pescado",
+      price: "",
+      description: "",
+    },
+  ];
 
     const fetchMenuItems = async () => {
       try {
