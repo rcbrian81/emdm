@@ -29,7 +29,7 @@ export const metadata = {
 
 export default function Menu() {
   // Sample data for each category
-
+  //for git
   const cockteles = [
     {
       name: "Campechana",
