@@ -1,346 +1,80 @@
+"use client";
+import { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import CategorySection from "../components/CategorySection";
 import ActionBar from "../components/ActionBar";
 import Footer from "../components/Footer";
 
-export const metadata = {
-  title: "El Mundo De Mariscos Mexican Food Menu in Oceanside ",
-  description:
-    "Discover the Mexican Food in Oceanside, CA, at El Mundo de Mariscos. Our micheladas are crafted with ice-cold beer, fresh lime juice, and our signature homemade chili powder that customers love. Whether you're enjoying a game day or just craving a refreshing drink, our micheladas offer the perfect balance of flavor and spice, all served in a lively Mexican atmosphere with great music and unbeatable vibes.",
-
-  author: "El Mundo de Mariscos",
-  canonical: "https://mundodemariscos.com/menu",
-  openGraph: {
-    title: "El Mundo De Mariscos - Best Mexican Food in Oceanside",
-    description:
-      "Discover the best micheladas in Oceanside, CA, at El Mundo de Mariscos.",
-    image: "",
-    url: "https://mundodemariscos.com/menu",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "El Mundo De Mariscos - Best Mexican Food in Oceanside",
-    description:
-      "Discover the Mexican Food in Oceanside, CA, at El Mundo de Mariscos.",
-    image: "",
-  },
-};
-
 export default function Menu() {
-  // Sample data for each category
+  const [menuItems, setMenuItems] = useState([]);
+  const [categories, setCategories] = useState({});
+  const [cart, setCart] = useState([]); // Cart state
+  const [loading, setLoading] = useState(true); // Loading state
 
-  const cockteles = [
-    {
-      name: "Campechana",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Cocktel de Mariscos",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Cocktel Camaron",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Cocktel Mixto",
-      price: "",
-      description: "",
-    },
-  ];
+  useEffect(() => {
+    const startSession = async () => {
+      try {
+        await fetch("/api/session", { method: "POST" });
+      } catch (error) {
+        console.error("Failed to start session:", error);
+      }
+    };
 
-  const caldos = [
-    {
-      name: "Mariscos",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Levanta Muerto",
-      price: "",
-      description: "",
-    },
-    {
-      name: "7 Mares",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Pescado",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Pescado Y Camaron",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Consome de Camaron",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Caldo Especial",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Pescado",
-      price: "",
-      description: "",
-    },
-  ];
+    startSession();
 
-  const Botanas = [
-    {
-      name: "Mariscada Fria",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Aguachiles",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Ceviche de Pescado",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Ceviche de Camaron",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Camarones Cucaracha",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Camarones Fritos",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Botana del Rey",
-      price: "",
-      description: "",
-    },
-  ];
+    const fetchMenuItems = async () => {
+      try {
+        const response = await fetch("/api_db/menu");
+        if (response.ok) {
+          const data = await response.json();
+          // Group items by category
+          const groupedItems = data.reduce((acc, item) => {
+            if (!acc[item.category]) acc[item.category] = [];
+            acc[item.category].push(item);
+            return acc;
+          }, {});
+          setCategories(groupedItems);
+          setLoading(false); // Set loading to false after items are fetched
+        } else {
+          console.error("Failed to fetch menu items");
+        }
+      } catch (error) {
+        console.error("Error fetching menu items:", error);
+      }
+    };
+    fetchMenuItems();
+  }, []);
 
-  const Specialties = [
-    {
-      name: "Parillada",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Molcajete",
-      price: "",
-      description: "",
-    },
-  ];
+  const addToCart = async (foodID, quantity) => {
+    setCart((prevCart) => [...prevCart, { foodID, quantity }]);
 
-  const Tostadas = [
-    {
-      name: "Tostada de Mariscos",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Tostada de Mixto",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Tostada de Camaron",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Ceviche de Pescado",
-      price: "",
-      description: "",
-    },
-  ];
+    try {
+      const response = await fetch("/api/cart/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ foodID, quantity }),
+      });
 
-  const Plates = [
-    {
-      name: "Mojara Frita",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Mojara Al Mojo De Ajo",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Frita Con Costa Azul",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Filete Al Mojo de Ajo",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Filete A La Plancha",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Filete Empanizado",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Filete Al Mundo",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Camarones Empanizado",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Camarones Al Mojo De Ajo",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Fajitas",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Plate",
-      price: "",
-      description: "",
-    },
-  ];
+      if (!response.ok) {
+        throw new Error("Failed to add item to cart");
+      }
 
-  const Tacos = [
-    {
-      name: "Taco",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Fish Taco",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Shredded Beef Taco",
-      price: "",
-      description: "",
-    },
-  ];
+      console.log("Added to cart:", { foodID, quantity });
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
 
-  const Nacos_Fires = [
-    {
-      name: "Nachos",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Fries",
-      price: "",
-      description: "",
-    },
-  ];
+  const categoryKeys = Object.keys(categories);
+  const half = Math.ceil(categoryKeys.length / 2);
+  const column1 = categoryKeys.slice(0, half);
+  const column2 = categoryKeys.slice(half);
 
-  const Buritos = [
-    {
-      name: "Burrito",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Burrito de Camaron",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Surf & Turf",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Bean & Cheese",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Veggie",
-      price: "",
-      description: "",
-    },
-  ];
-
-  const Breakfeast = [
-    {
-      name: "Burrito",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Burrito de Camaron",
-      price: "",
-      description: "",
-    },
-  ];
-
-  const Quesadillas = [
-    {
-      name: "Quesadilla",
-      price: "",
-      description: "",
-    },
-  ];
-
-  const Qaxacenos = [
-    {
-      name: "Tayuda",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Fish Taco",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Shredded Beef Taco",
-      price: "",
-      description: "",
-    },
-  ];
-
-  const Kids_Menu = [
-    {
-      name: "Chicken Nuggets & Fires",
-      price: "",
-      description: "",
-    },
-    {
-      name: "Plain Chese Burger & Fries",
-      price: "",
-      description: "",
-    },
-  ];
   return (
     <div
-      className="min-h-screen bg-gray-50  "
+      className="min-h-screen bg-gray-50"
       style={{
         backgroundImage: "url('images/background8.webp')",
         backgroundSize: "cover",
@@ -349,31 +83,73 @@ export default function Menu() {
       }}
     >
       <NavBar colors="bg-white text-black" />
-      <div className="container text-black mx-auto px-4 py-8 bg-white shadow-xl rounded-lg border border-gray-200 mt-12">
+
+      {/* Floating Go to Cart Button */}
+      <a
+        href="/cart"
+        className="fixed top-8 right-8 bg-green-500 text-white px-4 py-3 rounded-full shadow-lg hover:bg-green-600 transition duration-300"
+      >
+        Go to Cart
+      </a>
+
+      <div className=" container text-black mx-auto px-4 py-8 bg-white shadow-xl rounded-lg border border-gray-200 mt-12 ">
         <h1 className="text-5xl font-bold text-center mb-8">Our Menu</h1>
 
-        {/* Grid for two columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="space-y-12">
-            <CategorySection title="Specialties" items={Specialties} />
-            <CategorySection title="Oaxaqueños" items={Qaxacenos} />
-            <CategorySection title="Cockteles" items={cockteles} />
-            <CategorySection title="Caldos" items={caldos} />
-            <CategorySection title="Botanas" items={Botanas} />
-
-            <CategorySection title="Quesadillas" items={Quesadillas} />
+        {/* Show loading message if items are still loading */}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center h-1/2 text-center border border-black">
+            <svg
+              className="animate-spin h-12 w-12 text-blue-500 mb-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 4.418 3.582 8 8 8v-4.709z"
+              ></path>
+            </svg>
+            <p className="text-2xl font-semibold text-gray-700 animate-pulse">
+              Loading menu...
+            </p>
           </div>
-          {/* Right Column */}
-          <div className="space-y-12">
-            <CategorySection title="Buritos" items={Buritos} />
-            <CategorySection title="Tacos" items={Tacos} />
-            <CategorySection title="Plates" items={Plates} />
-            <CategorySection title="Naches/Fries" items={Nacos_Fires} />
-            <CategorySection title="Tostadas" items={Tostadas} />
-            <CategorySection title="Kids Menu" items={Kids_Menu} />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* Left Column */}
+            <div className="space-y-12">
+              {column1.map((category) => (
+                <CategorySection
+                  key={category}
+                  title={category}
+                  items={categories[category]}
+                  onAddToCart={addToCart}
+                />
+              ))}
+            </div>
+            {/* Right Column */}
+            <div className="space-y-12">
+              {column2.map((category) => (
+                <CategorySection
+                  key={category}
+                  title={category}
+                  items={categories[category]}
+                  onAddToCart={addToCart}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
+
       <ActionBar />
       <Footer />
     </div>
