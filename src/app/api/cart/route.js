@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma"; // Adjust path as necessary
 export async function POST(request) {
   try {
     const { cartItems, sessionId } = await request.json();
-
+    //for git
     // Validate cart data
     if (!cartItems || !sessionId) {
       return NextResponse.json({ error: "Invalid cart data" }, { status: 400 });
