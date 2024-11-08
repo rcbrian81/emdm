@@ -10,6 +10,7 @@ export default function Dashboard() {
   const [dataDisplay, setDataDisplay] = useState(null);
 
   useEffect(() => {
+    console.log("Dashboard useEffect running");
     async function fetchPaidOrders() {
       try {
         const response = await fetch("/api_db/admin/dashboard");

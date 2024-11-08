@@ -91,6 +91,7 @@ export async function POST(request) {
         cartItems: JSON.stringify(cartItems), // Store cart items as JSON
       },
     });
+    console.log("Order created:", order);
     if (delivery.data.fee) {
       const email = "elmundodemariscos@gmail.com";
       const subject = `NEW ORDER: ${uniqueIdentifier} - ${name}`;
