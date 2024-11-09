@@ -8,18 +8,22 @@ export async function GET() {
     const paidOrders = await prisma.order.findMany({
       where: { status: "paid" },
       select: {
+        id: true,
         sessionId: true,
         name: true, // Include 'name' in the selection
         totalPrice: true,
         cartItems: true,
+        createdAt: true,
       },
     });
 
     // Process and format data to send only the required information
     const formattedOrders = paidOrders.map((order) => ({
-      id: order.sessionId,
+      id: order.id,
+      sessionId: order.sessionId,
       name: order.name,
       totalPrice: order.totalPrice,
+      createdAt: order.createdAt,
       items: JSON.parse(order.cartItems).map((cartItem) => ({
         name: cartItem.menuItem.name,
         quantity: cartItem.quantity,

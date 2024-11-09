@@ -45,7 +45,9 @@ export default function Dashboard() {
   if (error) {
     return <p className="text-center text-red-500">Error: {error}</p>;
   }
-
+  function handleDelete(orderId) {
+    console.log(order.id);
+  }
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
@@ -57,7 +59,10 @@ export default function Dashboard() {
             <thead>
               <tr>
                 <th className="w-1/6 px-4 py-2 border-b bg-gray-50 font-medium text-gray-600">
-                  Order ID
+                  Date-Time
+                </th>
+                <th className="w-1/6 px-4 py-2 border-b bg-gray-50 font-medium text-gray-600">
+                  Session ID
                 </th>
                 <th className="w-1/6 px-4 py-2 border-b bg-gray-50 font-medium text-gray-600">
                   Order Name
@@ -82,7 +87,15 @@ export default function Dashboard() {
                   }`}
                 >
                   <td className="px-4 py-3 border-b text-gray-700">
-                    {order.id}
+                    {/* Convert and display createdAt in local time */}
+                    {new Date(order.createdAt).toLocaleString("en-US", {
+                      timeZone: "America/Los_Angeles", // Set to your desired time zone
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })}
+                  </td>
+                  <td className="px-4 py-3 border-b text-gray-700">
+                    {order.sessionId}
                   </td>
                   <td className="px-4 py-3 border-b text-gray-700">
                     {order.name}
@@ -108,12 +121,19 @@ export default function Dashboard() {
                     </div>
                   </td>
                   <td className="px-4 py-3 border-b text-gray-700">
-                    {!confirmedOrders[order.id] && (
+                    {!confirmedOrders[order.id] ? (
                       <button
                         onClick={() => handleConfirm(order.id)}
                         className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
                       >
                         Confirm
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleDelete(order.id)}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                      >
+                        Delete
                       </button>
                     )}
                   </td>

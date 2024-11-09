@@ -30,7 +30,16 @@ export default async function Admin() {
 
   return (
     <div>
-      <h1>Manage Data Base</h1>
+      <div className="flex items-center justify-between p-6  rounded-lg shadow-md">
+        <h1 className="text-2xl font-semibold text-whtie">Manage Database</h1>
+        <a
+          href="/admin/dashboard"
+          className="px-6 py-2 text-white bg-blue-700 hover:bg-blue-400 rounded-lg transition duration-200 shadow-md"
+        >
+          Kitchen Dashboard
+        </a>
+      </div>
+
       <MenuAdd></MenuAdd>
       <MenuRemove></MenuRemove>
     </div>

@@ -5,6 +5,9 @@ export default function MenuRemove() {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedItemIds, setSelectedItemIds] = useState([]);
+  const [editItemId, setEditItemId] = useState(null);
+  const [editedPrice, setEditedPrice] = useState("");
+  const [editedDescription, setEditedDescription] = useState("");
 
   const fetchMenuItems = async () => {
     setLoading(true);
@@ -22,21 +25,16 @@ export default function MenuRemove() {
       setLoading(false);
     }
   };
-  //vefiry authentication and authority before delete.
+
   const deleteSelectedItems = async () => {
     try {
       const response = await fetch("/api_db/menu", {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ids: selectedItemIds }), // Send the selected IDs
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: selectedItemIds }),
       });
-
       if (response.ok) {
-        // Refresh the menu items after deletion
         fetchMenuItems();
-        // Clear the selected items
         setSelectedItemIds([]);
       } else {
         console.error("Failed to delete selected items");
@@ -46,21 +44,37 @@ export default function MenuRemove() {
     }
   };
 
-  // Fetch menu items when the component is mounted
+  const updateMenuItem = async (id) => {
+    try {
+      const response = await fetch(`/api_db/menu/update`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: id,
+          price: parseFloat(editedPrice),
+          description: editedDescription,
+        }),
+      });
+      if (response.ok) {
+        fetchMenuItems();
+        setEditItemId(null);
+      } else {
+        console.error("Failed to update menu item");
+      }
+    } catch (error) {
+      console.error("Error updating menu item:", error);
+    }
+  };
+
   useEffect(() => {
     fetchMenuItems();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   const toggleSelection = (id) => {
-    setSelectedItemIds(
-      (prevSelected) =>
-        prevSelected.includes(id)
-          ? prevSelected.filter((itemId) => itemId !== id) // Deselect if already selected
-          : [...prevSelected, id] // Select if not already selected
+    setSelectedItemIds((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((itemId) => itemId !== id)
+        : [...prevSelected, id]
     );
   };
 
@@ -72,59 +86,115 @@ export default function MenuRemove() {
     return acc;
   }, {});
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  const selevtedEventHandler = () => {
-    setSelected();
-  };
   return (
-    <div>
-      <h1>Menu Items</h1>
-      <button
-        onClick={fetchMenuItems}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Refresh
-      </button>
-      <button
-        onClick={deleteSelectedItems}
-        className="bg-red-500 text-white px-4 py-2 rounded ml-2"
-        disabled={selectedItemIds.length === 0} // Disable if no items are selected
-      >
-        Delete Selected
-      </button>
-      {Object.keys(groupedItems).map((category) => (
-        <div key={category}>
-          <h2 className="text-xl font-bold mt-4">{category}</h2>
-          <ul>
-            {groupedItems[category].map((item) => (
-              <li
-                key={item.id}
-                onClick={() => toggleSelection(item.id)} // Toggle selection
-                className={`flex felx-row p-4 my-2 border rounded cursor-pointer ${
-                  selectedItemIds.includes(item.id)
-                    ? "bg-yellow-200 text-black"
-                    : ""
-                }`} // Highlight if selected
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedItemIds.includes(item.id)}
-                  onChange={() => toggleSelection(item.id)}
-                  className="mr-2"
-                />
-                <h3>
-                  {item.name} (ID: {item.id})
-                </h3>
-                <p className="pl-5">Price: ${item.price.toFixed(2)}</p>
-                <p className="pl-5">Description: ${item.description}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+    <div className="min-h-screen p-6 bg-gray-100 flex flex-col items-center">
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">Menu Items</h1>
+      <div className="flex space-x-4 mb-6">
+        <button
+          onClick={fetchMenuItems}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md transition duration-200"
+        >
+          Refresh
+        </button>
+        <button
+          onClick={deleteSelectedItems}
+          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-md transition duration-200"
+          disabled={selectedItemIds.length === 0}
+        >
+          Delete Selected
+        </button>
+      </div>
+      {loading ? (
+        <div className="text-gray-600">Loading...</div>
+      ) : (
+        Object.keys(groupedItems).map((category) => (
+          <div key={category} className="w-full max-w-3xl mb-8">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">
+              {category}
+            </h2>
+            <ul className="space-y-4">
+              {groupedItems[category].map((item) => (
+                <li
+                  key={item.id}
+                  className={`flex items-center justify-between p-4 border rounded-lg shadow-sm transition duration-200 ${
+                    selectedItemIds.includes(item.id)
+                      ? "bg-yellow-100 border-yellow-300"
+                      : "bg-white border-gray-300 hover:bg-gray-50"
+                  }`}
+                >
+                  <div className="flex items-center space-x-4">
+                    <input
+                      type="checkbox"
+                      checked={selectedItemIds.includes(item.id)}
+                      onChange={() => toggleSelection(item.id)}
+                      className="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <div>
+                      <h3 className="text-lg font-medium text-gray-800">
+                        {item.name}
+                      </h3>
+                      {editItemId === item.id ? (
+                        <div className="flex items-center space-x-4 mt-2">
+                          <input
+                            type="number"
+                            value={editedPrice}
+                            onChange={(e) => setEditedPrice(e.target.value)}
+                            placeholder="Price"
+                            className="border border-gray-300 rounded px-3 py-1 w-24 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          />
+                          <input
+                            type="text"
+                            value={editedDescription}
+                            onChange={(e) =>
+                              setEditedDescription(e.target.value)
+                            }
+                            placeholder="Description"
+                            className="border border-gray-300 rounded px-3 py-1 w-full text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          />
+                          <button
+                            onClick={() => updateMenuItem(item.id)}
+                            className="bg-green-500 text-white px-4 py-1 rounded-lg shadow-md transition duration-200 hover:bg-green-600"
+                          >
+                            Update
+                          </button>
+                          <button
+                            onClick={() => setEditItemId(null)}
+                            className="text-red-500 px-2 py-1"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center space-x-4 mt-2">
+                          <p className="text-gray-600">
+                            Price: ${item.price.toFixed(2)}
+                          </p>
+                          <p className="text-gray-600">
+                            Description: {item.description}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  {editItemId !== item.id && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditItemId(item.id);
+                        setEditedPrice(item.price);
+                        setEditedDescription(item.description);
+                      }}
+                      className="bg-yellow-500 text-white px-3 py-1 rounded-lg shadow-md transition duration-200 hover:bg-yellow-600"
+                    >
+                      Edit
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      )}
     </div>
   );
 }
