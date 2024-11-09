@@ -11,18 +11,19 @@ export async function POST(request) {
   try {
     const cookie = request.cookies.get("session_id");
     const sessionId = cookie?.value;
-    const { dropoff_address, dropoff_phone_number, name } =
+    const { dropoff_address, dropoff_phone_number, name, tip } =
       await request.json();
     console.log(dropoff_address);
     console.log(dropoff_phone_number);
     console.log(name);
 
     const deliveryDetails = JSON.stringify({
-      external_delivery_id: `order_${Date.now()}`, // Generate a unique ID
+      external_delivery_id: `order_${Date.now()}`, // Generate a unique ID,
       pickup_address: "2936 oceanside blvd, oceanside, CA 92054, USA",
       pickup_phone_number: "7608282465",
       dropoff_address: dropoff_address,
       dropoff_phone_number: dropoff_phone_number,
+      tip: tip,
     });
     const quoteObject = await doordashQuote(deliveryDetails);
     const deliveryFee = quoteObject.data.fee;
@@ -74,6 +75,19 @@ export async function POST(request) {
       quantity: 1,
     };
     lineItems.push(deliveryLineItem);
+    if (tip > 0) {
+      const deliveryTipLineItem = {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: "Driver's Tip",
+          },
+          unit_amount: tip, // Set this to the delivery fee amount in cents
+        },
+        quantity: 1,
+      };
+      lineItems.push(deliveryTipLineItem);
+    }
 
     console.log(lineItems);
 

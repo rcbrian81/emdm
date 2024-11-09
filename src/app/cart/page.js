@@ -13,6 +13,9 @@ export default function CheckoutPage() {
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [error, setError] = useState(null);
   const [name, setName] = useState(""); // New state for customer name
+  const [tip, setTipAmount] = useState(0); // New state for customer name
+  const [oldTip, setOldTipAmount] = useState(0); // New state for customer name
+  const [tipAdded, setTipAdded] = useState(false);
 
   const [pickupAddress, setPickupAddress] = useState("");
   const [pickupPhone, setPickupPhone] = useState("");
@@ -70,7 +73,17 @@ export default function CheckoutPage() {
       setQuoteLoading(false);
     }
   }
-
+  function handleTipAdded(e) {
+    e.preventDefault();
+    setTotalPrice((prevTotal) => prevTotal + tip);
+    setOldTipAmount(tip);
+    setTipAdded(true);
+  }
+  function handleUpdateTip(e) {
+    e.preventDefault();
+    setTotalPrice((prevTotal) => prevTotal + tip - oldTip);
+    setOldTipAmount(tip);
+  }
   function handleDeliveryDetailsSubmit(e) {
     e.preventDefault();
     fetchDeliveryQuote();
@@ -132,6 +145,7 @@ export default function CheckoutPage() {
           name, // Include the name in the checkout session
           dropoff_address: dropoffAddress,
           dropoff_phone_number: dropoffPhone,
+          tip: tip * 100,
         }),
       });
 
@@ -190,6 +204,40 @@ export default function CheckoutPage() {
         className="w-full p-2 mt-2 border rounded"
         required
       />
+      <label htmlFor="tip" className="">
+        Driver's Tip ($)
+      </label>
+      <div className="flex space-x-4">
+        <input
+          type="number"
+          id="tip"
+          name="tip"
+          placeholder="Enter tip amount"
+          min="0"
+          step="0.01"
+          className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          onChange={(e) => setTipAmount(Math.round(parseFloat(e.target.value)))}
+          // example for managing state
+        />
+        {!tipAdded ? (
+          <button
+            onClick={handleTipAdded}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-green-500"
+            // Disable if name is empty
+          >
+            Add Tip
+          </button>
+        ) : (
+          <button
+            onClick={handleUpdateTip}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-green-500"
+            // Disable if name is empty
+          >
+            Update Tip
+          </button>
+        )}
+      </div>
+
       <div className="total mt-8 p-4 bg-gray-100 rounded-lg text-center">
         {quoteLoading ? (
           <div className="flex justify-center items-center space-x-2">

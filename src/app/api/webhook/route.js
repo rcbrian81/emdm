@@ -53,6 +53,8 @@ export async function POST(request) {
 
     const deliveryDetails = JSON.stringify({
       external_delivery_id: `order_${Date.now()}`, // Generate a unique ID
+      pickup_business_name: "El Mundo De Mariscos",
+      pickup_reference_tag: `${name} - ${uniqueIdentifier}`,
       pickup_address: "2936 oceanside blvd,  oceanside, CA 92054, USA",
       pickup_phone_number: "7608282465",
       dropoff_address: dropoff_address,

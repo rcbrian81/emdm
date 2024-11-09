@@ -20,3 +20,15 @@ export async function createSession(userId, isAuthenticated) {
 
   return sessionId;
 }
+
+export async function checkAuthentication(sessionId) {
+  // Find the session and check if the user is authenticated
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+  });
+
+  if (!session || !session.isAuthenticated) {
+    return false;
+  }
+  return true;
+}

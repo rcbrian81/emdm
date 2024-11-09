@@ -1,7 +1,15 @@
 import prisma from "@/lib/prisma";
+import { checkAuthentication } from "@/lib/session";
 
 export async function GET(req, res) {
   try {
+    const sessionId = req.cookies.get("session_id")?.value;
+    if (!(await checkAuthentication(sessionId))) {
+      return new Response(JSON.stringify({ error: "Unauthorized access." }), {
+        status: 401,
+      });
+    }
+
     // Find expired sessions
     const expiredSessions = await prisma.session.findMany({
       where: {
