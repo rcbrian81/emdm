@@ -8,6 +8,7 @@ export default function Dashboard() {
   const [error, setError] = useState(null);
   const [confirmedOrders, setConfirmedOrders] = useState({});
   const [dataDisplay, setDataDisplay] = useState(null);
+  const [pollingMins, setPollingMins] = useState(2);
 
   useEffect(() => {
     console.log("Dashboard useEffect running");
@@ -29,13 +30,52 @@ export default function Dashboard() {
     }
 
     fetchPaidOrders();
+    const interval = setInterval(fetchPaidOrders, pollingMins * 60000); // 120000 ms = 2 minutes
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(interval);
   }, []);
 
-  const handleConfirm = (orderId) => {
+  const handleUpdate = async (order) => {
+    // Update the confirmed orders in state
     setConfirmedOrders((prevState) => ({
       ...prevState,
-      [orderId]: true,
+      [order.id]: true,
     }));
+
+    try {
+      const response = await fetch("/api_db/admin/dashboard", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: order.id, // Make sure `orderId` is defined
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update order status");
+      }
+
+      // Parse the JSON response
+      const updatedStatus = await response.json();
+      console.log("Order status updated:", updatedStatus);
+      setPaidOrders((prevOrders) =>
+        prevOrders.map((o) => {
+          // If this is the order we updated, change its status to the new status
+          if (o.id === order.id) {
+            return { ...o, status: updatedStatus }; // New object with updated status
+          }
+          // If it's not the correct order, keep it as is
+          return o;
+        })
+      );
+
+      // Optionally, update any state based on the response, e.g., to reflect the status update
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   if (loading) {
@@ -45,14 +85,18 @@ export default function Dashboard() {
   if (error) {
     return <p className="text-center text-red-500">Error: {error}</p>;
   }
-  function handleDelete(orderId) {
+  function handleDelete(order) {
     console.log(order.id);
+    handleUpdate(order);
+    setPaidOrders(
+      (prevOrders) => prevOrders.filter((o) => o.id !== order.id) // Keep orders that don’t match the deleted order
+    );
   }
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
         <h1 className="text-2xl font-semibold text-gray-700 text-center mb-6">
-          Paid Orders Dashboard
+          Kitchen Dashboard
         </h1>
         {paidOrders.length > 0 ? (
           <table className="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
@@ -83,7 +127,9 @@ export default function Dashboard() {
                 <tr
                   key={order.id}
                   className={`${
-                    confirmedOrders[order.id] ? "bg-white" : "bg-red-500"
+                    order.status == "prepping"
+                      ? "bg-white"
+                      : "bg-red-500 animate-pulse border-8 border-yellow-200"
                   }`}
                 >
                   <td className="px-4 py-3 border-b text-gray-700">
@@ -121,16 +167,24 @@ export default function Dashboard() {
                     </div>
                   </td>
                   <td className="px-4 py-3 border-b text-gray-700">
-                    {!confirmedOrders[order.id] ? (
+                    {order.status == "paid" ? (
                       <button
-                        onClick={() => handleConfirm(order.id)}
+                        onClick={() => handleUpdate(order)}
                         className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
                       >
                         Confirm
                       </button>
                     ) : (
                       <button
-                        onClick={handleDelete(order.id)}
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              "Are you sure you want to delete this order?"
+                            )
+                          ) {
+                            handleDelete(order);
+                          }
+                        }}
                         className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
                       >
                         Delete
@@ -144,6 +198,12 @@ export default function Dashboard() {
         ) : (
           <p className="text-center text-gray-600">No paid orders available</p>
         )}
+        <a
+          href="/admin/dashboard/all"
+          className="px-6 py-2 text-white bg-blue-700 hover:bg-blue-400 rounded-lg transition duration-200 shadow-md"
+        >
+          All History
+        </a>
       </div>
     </div>
   );
