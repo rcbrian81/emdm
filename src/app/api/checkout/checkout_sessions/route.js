@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 
 export async function POST(request) {
   console.log("=POST Checkout_Sessions=================");
+  return NextResponse.json({ working: "working" });
   try {
     const cookie = request.cookies.get("session_id");
     const sessionId = cookie?.value;

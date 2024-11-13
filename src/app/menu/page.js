@@ -83,6 +83,10 @@ export default function Menu() {
       }}
     >
       <NavBar colors="bg-white text-black" />
+      <div className="text-3xl text-center text-black">
+        <p>Demo Menu</p>
+        <p>Building ...</p>
+      </div>
 
       {/* Floating Go to Cart Button */}
       <a
